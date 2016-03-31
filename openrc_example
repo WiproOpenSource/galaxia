@@ -1,0 +1,3 @@
+export galaxia_api_endpoint=http://10.200.208.19:7000/v1
+export aggregator_endpoint=http://10.200.208.19:9090/api/v1
+export renderer_endpoint=http://10.200.208.19:3000/
