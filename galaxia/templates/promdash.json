@@ -1,0 +1,25 @@
+{
+        "name": "TestTemplate",
+	    "created_at": "2015-05-13T17:05:10.512Z",
+	    "updated_at": "2015-05-25T13:20:12.622Z",
+	    "dashboard_json":
+	     {
+	    "globalConfig":
+		 {
+	    "numColumns": 4,
+	    "aspectRatio": 0.75,
+	    "theme": "dark_theme",
+	    "endTime": null,
+	    "vars": { },
+	    "tags": [ ],
+	    "palette": "colorwheel",
+	    "resolution": 4,
+	    "refresh": "1m",
+	    "showTags": false,
+	    "showVars": false,
+	    "range": "1h"
+	     },
+			 "widgets":[]
+	    }
+
+}
