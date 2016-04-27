@@ -1,0 +1,60 @@
+---
+
+- name: create promdash directory structure
+  file: >
+    state=directory
+    path={{ item }}
+    owner=root
+    group=root
+  with_items:
+    - "{{ promdash_root_dir }}"
+
+- name: install packages required for PromDash
+  apt: >
+    pkg={{item}}
+    state=installed
+  with_items:
+    - ruby
+    - bundler
+    - rake
+    - libpq-dev
+    - mysql-client
+    - libmysqlclient-dev
+    - libsqlite3-dev
+    - git
+
+- name: clone PromDash git repo
+  sudo: false
+  raw: >
+    sudo git clone https://github.com/prometheus/promdash.git {{ promdash_root_dir }};
+    sudo chown -Rf ${USER}:${USER} {{ promdash_root_dir }};
+
+- name: Create Promdash database config file
+  sudo: false
+  template: src=database.yml.j2 dest={{ promdash_root_dir }}/config/database.yml
+
+- name: Install Promdash
+  sudo: false
+  raw: >
+    cd {{ promdash_root_dir }};
+    export DATABASE_URL=mysql2://{{mysql_username}}:{{mysql_password}}@{{mysql_host}}/galaxia;
+    export RAILS_ENV=production;
+    echo $DATABASE_URL;
+    bundle install;
+    bundle exec rake db:setup;
+    make build;
+
+- name: run PromDash
+  sudo: false
+  raw: >
+    cd {{ promdash_root_dir }};
+    export DATABASE_URL=mysql2://{{mysql_username}}:{{mysql_password}}@{{mysql_host}}/galaxia;
+    export RAILS_ENV=production;
+    bin/env bin/bundle exec bin/thin -p 3000 start -d
+
+- name: Create server entry 
+  sudo: false
+  raw: >
+    i=`curl http://169.254.169.254/latest/meta-data/public-ipv4`;
+    echo $i;
+    mysql -u{{mysql_username}} -p{{mysql_password}} -h {{mysql_host}} -Bse "INSERT INTO galaxia.servers VALUES (NULL,'prometheus','http://$i:9090',NULL,NULL,'prometheus')";

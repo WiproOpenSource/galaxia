@@ -1,0 +1,65 @@
+---
+- name: create prometheus directory structure
+  file: >
+    state=directory
+    path={{ item }}
+    owner=root
+    group=root
+  with_items:
+    - "{{ galaxia_config_dir }}"
+
+- name: Install list of packages
+  apt: name={{item}} state=installed
+  with_items:
+       - python-pip
+       - python-mysqldb
+       - python-dev
+
+- name: Install python module
+  pip: name=MySQL-python
+
+- name: Install galaxia
+  raw: >
+    cd {{ galaxia_root_dir }};
+    pip install -r requirements.txt;
+    python setup.py install;
+    python tools/database.py --host {{ mysql_host }} --type mysql --username root --password root;
+    
+- name: create galaxia config file
+  template: src=galaxia.conf.j2 dest={{ galaxia_config_dir }}/galaxia.conf
+
+- name: create gapi upstart init files
+  template: >
+    src={{ item }}.j2
+    dest=/etc/init/{{ item }}
+  with_items:
+    - gapi.conf
+
+- name: Start gapi service
+  service: name=gapi state=started enabled=yes
+  #notify:
+  #  - restart gapi
+
+- name: create grenderer upstart init files
+  template: >
+    src={{ item }}.j2
+    dest=/etc/init/{{ item }}
+  with_items:
+    - grenderer.conf
+
+- name: Start grenderer service
+  service: name=grenderer state=started enabled=yes
+  #notify:
+   # - restart grenderer
+
+- name: create gexporter upstart init files
+  template: >
+    src={{ item }}.j2
+    dest=/etc/init/{{ item }}
+  with_items:
+    - gexporter.conf
+
+- name: Start gexporter service
+  service: name=gexporter state=started enabled=yes
+#  notify:
+ #   - restart gexporter

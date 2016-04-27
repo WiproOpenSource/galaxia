@@ -1,0 +1,6 @@
+---
+apt_key_sig: 58118E89F3A912897C070ADBF76221572C52609D
+apt_key_url: hkp://p80.pool.sks-keyservers.net:80
+apt_repository: deb https://apt.dockerproject.org/repo ubuntu-trusty main
+docker_pkg_name: docker-engine
+docker_apt_cache_valid_time: 600

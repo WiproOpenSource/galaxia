@@ -1,0 +1,10 @@
+# Run prometheus
+
+start on startup
+
+chdir {{ prometheus_dist_dir }}/prometheus-{{prometheus_version}}.linux-amd64
+
+script
+   ./prometheus -config.file /etc/prometheus/prometheus.yml
+end script
+

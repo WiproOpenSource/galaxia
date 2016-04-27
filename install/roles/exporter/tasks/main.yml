@@ -1,0 +1,24 @@
+---
+- name: Install cadvisor
+  docker:
+     name: cadvisor
+     image: google/cadvisor
+     state: started
+     detach: True
+     volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:rw"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+     ports:
+      - "8090:8080"
+
+- name: Install node exporter
+  docker:
+     name: nodeexporter
+     image: prom/node-exporter
+     state: started
+     net: host
+     ports:
+      - "9100:9100"
+

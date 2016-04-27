@@ -1,0 +1,38 @@
+---
+- name: Add the OS specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Install the mysql packages in Debian derivatives
+  apt: name={{ item }} state=installed update_cache=yes
+  with_items: mysql_pkgs
+  #environment: env
+  when: ansible_os_family == 'Debian'
+
+- name: Copy the my.cnf file 
+  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf
+  notify: 
+   - restart mysql
+
+- name: Start the mysql services
+  service: name={{ mysql_service }} state=started enabled=yes
+
+- name: update mysql root password for all root accounts
+  mysql_user: name=root host={{ item }} password={{ mysql_root_db_pass }}
+  with_items:
+   - "{{ ansible_fqdn }}"
+   - "{{ ansible_hostname }}"
+   - 127.0.0.1
+   - ::1
+   - localhost
+  when: ansible_hostname != 'localhost' 
+
+- name: update mysql root password for all root accounts1
+  mysql_user: name=root host={{ item }} password={{ mysql_root_db_pass }}
+  with_items:
+   - 127.0.0.1
+   - ::1
+   - localhost
+  when: ansible_hostname == 'localhost' 
+
+- name: copy .my.cnf file with root password credentials
+  template: src=.my.cnf.j2 dest=~/.my.cnf mode=0600

@@ -1,0 +1,6 @@
+---
+promdash_root_dir: /opt/promdash
+mysql_username: root
+mysql_password: root
+mysql_host: localhost
+

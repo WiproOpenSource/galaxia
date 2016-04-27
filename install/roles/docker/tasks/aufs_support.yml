@@ -1,0 +1,7 @@
+---
+- name: Install support for aufs storage
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - linux-image-extra-{{ansible_kernel}}

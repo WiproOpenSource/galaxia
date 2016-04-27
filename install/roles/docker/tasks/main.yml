@@ -1,0 +1,29 @@
+---
+
+- name: Update kernel for aufs storage support
+  include: aufs_support.yml
+
+- name: Add docker GPG key
+  apt_key:
+    id: "{{ apt_key_sig }}"
+    keyserver: "{{ apt_key_url }}"
+    state: present
+  register: add_repository_key
+  ignore_errors: true
+
+- name: Add Docker repository and update apt cache
+  apt_repository:
+    repo: "{{ apt_repository }}"
+    update_cache: yes
+    state: present
+
+- name: Install docker package
+  apt:
+    name: "{{ docker_pkg_name }}"
+    update_cache: yes
+    cache_valid_time: "{{ docker_apt_cache_valid_time }}"
+
+- name: Start docker
+  service:
+    name: docker
+    state: started

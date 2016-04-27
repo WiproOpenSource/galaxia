@@ -1,0 +1,7 @@
+---
+prometheus_version: 0.16.1
+node_exporter_version: 0.12.0rc1
+prometheus_root_dir: /opt/prometheus
+prometheus_config_dir: /etc/prometheus
+prometheus_dist_dir: "{{ prometheus_root_dir }}/dist"
+

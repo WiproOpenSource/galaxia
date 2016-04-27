@@ -1,0 +1,15 @@
+---
+- name: reload gapi
+  service: name=gapi state=reloaded
+- name: restart gapi
+  service: name=gapi state=restarted
+
+- name: reload grenderer
+  service: name=grenderer state=reloaded
+- name: restart grenderer
+  service: name=grenderer state=restarted
+
+- name: reload gexporter
+  service: name=gexporter state=reloaded
+- name: restart gexporter
+  service: name=gexporter state=restarted
