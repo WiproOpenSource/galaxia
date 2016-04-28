@@ -80,6 +80,8 @@ class Catalogue(cli_utils.BaseParser):
             header = ["Name", "Dashboard_url"]
         if unit_type == 'exporter':
             header = ["EXPORTER_NAME", "EXPORTER_ID"]
+        if unit_type == 'nodes':
+            header = ["Instance_Name", "Host_Name"]
         format_print.format_dict(resp.json(), header)
 
 
