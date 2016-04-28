@@ -34,10 +34,12 @@ def get_names_list(resp):
 
 
 def get_node_name_list(resp):
-    names_list = []
+    instance_list = []
+    nodename_list = []
     result_list = json.loads(resp)['data']['result']
 
     for i in result_list:
-        names_list.append(i['metric'].get('instance').split(':')[0])
+        instance_list.append(i['metric'].get('instance').split(':')[0])
+        nodename_list.append(i['metric'].get('nodename'))
 
-    return names_list
+    return instance_list, nodename_list

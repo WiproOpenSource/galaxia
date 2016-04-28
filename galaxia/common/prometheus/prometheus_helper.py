@@ -60,3 +60,17 @@ def get_containers_by_hostname():
                                    None, None)
         names_list, _, hosts_list = response_parser.get_names_list(resp.text)
         return names_list, hosts_list
+
+
+def get_names_list():
+
+        prom_request_url = client.concatenate_url(os.getenv
+                                                  ("aggregator_endpoint"),
+                                                  query_url)
+        current_time = str(datetime.datetime.now().isoformat())+"Z"
+        query = "node_uname_info"
+        payload = {"query": query, "time": current_time}
+        resp = client.http_request("GET", prom_request_url, headers,
+                                   payload, None, None)
+        names_list, nodename_list = response_parser.get_node_name_list(resp.text)
+        return names_list, nodename_list

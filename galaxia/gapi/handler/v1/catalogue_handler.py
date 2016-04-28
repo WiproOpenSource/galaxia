@@ -62,3 +62,8 @@ class CatalogueHandler(object):
             return "Unable to get the exporter list because of database exception"
 
         return json.dumps(dict(result.fetchall()))
+
+    def nodes(self):
+        names_list, nodename_list = prometheus_helper.get_names_list()
+        dictionary = dict(zip(names_list, nodename_list))
+        return json.dumps(dictionary)
