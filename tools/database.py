@@ -154,5 +154,109 @@ def main():
                  'container_fs_io_current',\
                  'Number of I/Os currently in progress', 'container')")
 
+    # Inserting CPU stats for Nodes
+    conn.execute("INSERT INTO METRICS VALUES('node_cpu','node_cpu',\
+                 'cpu Seconds spent in each mode','node')")
+
+    # Inserting Disk IO stats for Nodes
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_bytes_read','node_disk_bytes_read',\
+                 'total number of bytes read successfully','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_bytes_written','node_disk_bytes_written',\
+                 'total number of bytes written successfully','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_io_now','node_disk_io_now',\
+                 'The number of I/Os currently in progress','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_io_time_ms','node_disk_io_time_ms',\
+                 'Milliseconds spent doing I/Os','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_io_time_weighted','node_disk_io_time_weighted',\
+                 'The weighted # of milliseconds spent doing I/Os','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_read_time_ms','node_disk_read_time_ms',\
+                 'The total number of reads completed successfully','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_reads_merged','node_disk_reads_merged',\
+                 'The number of reads merged','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_sectors_read','node_disk_sectors_read',\
+                 'The total number of sectors read successfully','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_sectors_written','node_disk_sectors_written',\
+                 'The total number of sectors written successfully','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_write_time_ms','node_disk_write_time_ms',\
+                 'This is the total number of milliseconds spent by all writes','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_writes_completed','node_disk_writes_completed',\
+                 'The total number of writes completed successfully','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_disk_writes_merged','node_disk_writes_merged',\
+                 'The number of writes merged','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_filesystem_free','node_filesystem_free',\
+                 'Filesystem free space in bytes','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_filesystem_size','node_filesystem_size',\
+                 'Filesystem size in bytes','node')")
+
+    # Inserting Memory stats for Nodes
+
+    conn.execute("INSERT INTO METRICS VALUES('node_memory_Cached','node_memory_Cached',\
+                 'Memory information field Cached','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_memory_Buffers','node_memory_Buffers',\
+                 'Memory information field Buffers','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_memory_Active','node_memory_Active',\
+                 'Memory information field Active','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_memory_Inactive','node_memory_Inactive',\
+                 'Memory information field Inactive','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_memory_MemAvailable','node_memory_MemAvailable',\
+                 'Memory information field MemAvailable','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_memory_MemFree','node_memory_MemFree',\
+                 'Memory information field MemFree','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_memory_MemTotal','node_memory_MemTotal',\
+                 'Memory information field MemTotal','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_memory_SwapFree','node_memory_SwapFree',\
+                 'Memory information field SwapFree','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_memory_SwapTotal','node_memory_SwapTotal',\
+                 'Memory information field SwapTotal','node')")
+
+    # Inserting Network stats for Nodes
+
+    conn.execute("INSERT INTO METRICS VALUES('node_network_receive_bytes','node_network_receive_bytes',\
+                 'Network device statistic receive_bytes','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_network_receive_compressed','node_network_receive_compressed',\
+                 'Network device statistic receive_compressed','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_network_receive_drop','node_network_receive_drop',\
+                 'Network device statistic receive_drop','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_network_receive_errs','node_network_receive_errs',\
+                 'Network device statistic receive_errs','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_network_receive_packets','node_network_receive_packets',\
+                 'Network device statistic receive_packets','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_network_transmit_bytes','node_network_transmit_bytes',\
+                 'Network device statistic transmit_bytes','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_network_transmit_compressed','node_network_transmit_compressed',\
+                 'Network device statistic transmit_compressed','node')")
+
+    conn.execute("INSERT INTO METRICS VALUES('node_network_transmit_packets','node_network_transmit_packets',\
+                 'Network device statistic transmit_packets','node')")
+
+
+
 if __name__ == '__main__':
     sys.exit(main())
