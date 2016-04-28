@@ -20,6 +20,8 @@
 
 - name: Install galaxia
   raw: >
+    sudo git clone https://github.com/WiproOpenSourcePractice/galaxia.git {{ galaxia_root_dir }};
+    sudo chown -Rf ${USER}:${USER} {{ galaxia_root_dir }};
     cd {{ galaxia_root_dir }};
     pip install -r requirements.txt;
     python setup.py install;
