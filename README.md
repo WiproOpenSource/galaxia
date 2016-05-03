@@ -147,7 +147,7 @@ Prometheus
 - Decompress the file prometheus-0.16.1.linux-amd64.tar.gz using the command "tar xzf prometheus-0.16.1.linux-amd64.tar.gz"
 - In the root directory create the file prometheus.yml with the following content
 
-.. code-block::
+```
 
     # my global config
         global:
@@ -180,12 +180,15 @@ Prometheus
 
                   target_groups:
                     - targets: ['localhost:8090']
+```
 
 - Now you can start prometheus server using the following command
 
-.. code-block::
+```
 
     ./prometheus -config.file=prometheus.yml
+
+```
 
 Prometheus by default listens on port 9090
 
@@ -225,10 +228,11 @@ cadvisor is being used as a metrics exporter here, we use a docker image here
 - Download the cadvisor image from https://hub.docker.com/r/google/cadvisor/
 - Start cadvisor using the following command
 
-.. code-block::
+```
 
      sudo docker run --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro  --publish=8090:8080   --detach=true
      --name=cadvisor google/cadvisor
+```
 
 Galaxia
 -------
@@ -237,18 +241,22 @@ Steps to install Galaxia
 - Download the source from <github_url>
 - Install MySQL Driver for python
 
-.. code-block::
+```
 
     sudo apt-get -y build-dep python-mysqldb
     sudo pip install MySQL-python
+    sudo pip install -r requirements.txt
+    sudo python setup.py install
 
-- sudo pip install -r requirements.txt
-- sudo python setup.py install
+```
+
 - Run the tools/database.py as follows, here host is mysql host and username/password are for mysql
 
-.. code-block::
+```
 
     python database.py --host localhost --type mysql --username root --password root**
+
+```
 
 This completes galaxia installation
 
@@ -256,66 +264,103 @@ Starting galaxia services
 ----------------------------
 Galaxia comes up with following services gapi, grenderer and gexporter. Let us start them one by one
 To test gexporter service you will need to setup OpenStack
-.. code-block::
+
 
     Run the following commands to start gapi service
-     - source openrc_example
-     - gapi --config-file etc/galaxia/galaxia.conf
+    
+    ```
+     source openrc_example
+     gapi --config-file etc/galaxia/galaxia.conf
+  
+    ```
+
 
     Run the following commands to start grenderer service
-     - source openrc_example
-     - grenderer --config-file etc/galaxia/galaxia.conf
-
+     
+    ``` 
+     source openrc_example
+     grenderer --config-file etc/galaxia/galaxia.conf
+    ```
+    
     Run the following commands to start gexporter service
-     - source openrc_example
-     - gexporter --config-file etc/galaxia/galaxia.conf
+    
+    ```
+    source openrc_example
+    gexporter --config-file etc/galaxia/galaxia.conf
 
+    ```
 Testing Galaxia Services
 ------------------------
 Currently galaxia supports containers and hence we need to start some containers on the host to test galaxia services.
 We will use httpd server(https://hub.docker.com/_/httpd/) images from docker hub for that
 
 - start couple of httpd container
-    - sudo docker run --name sample_http -d  httpd
-    - sudo docker run --name sample_http1 -d  httpd
 
+```    
+sudo docker run --name sample_http -d  httpd
+sudo docker run --name sample_http1 -d  httpd
+
+```
 - run some galaxia commands now
-    - source openrc_example
-    - galaxia --help
-    - galaxia metrics list --type container
-    - galaxia dashboard create --metrics-list container_memory_usage_bytes --names-list sample_http --name tes --unit-type docker
-    - galaxia dashboard create --metrics-list container_memory_usage_bytes --search-string sample --search-type name --unit-type docker --name test1
-
+    
+```
+source openrc_example
+galaxia --help
+galaxia metrics list --type container
+galaxia dashboard create --metrics-list container_memory_usage_bytes --names-list sample_http --name tes --unit-type docker
+galaxia dashboard create --metrics-list container_memory_usage_bytes --search-string sample --search-type name --unit-type docker --name test1
+```
 - Using curl command
 1) Create Dashboard
+
+```
  http://localhost:7000/v1/gapi "PUT Request" with the following data
 {"name": "ashish08" , "unit_type": "docker", "metrics_list": ["container_memory_usage_bytes", "container_cpu_system_seconds_total"], "names_list": ["httpd1_ecom1", "test123"]}
+```
 
 2) Update Dashboard
+```
 http://localhost:7000/v1/gapi "POST Request" with the following data
 {"name": "ashish08" , "unit_type": "docker", "metrics_list": ["container_memory_usage_bytes", "container_cpu_system_seconds_total"], "names_list": ["httpd1_ecom1"]}
-
+```
 3) Delete Dashboard
+
+```
 http://localhost:7000/v1/gapi "DELETE Request" with the following data
 {"name": "ashish08"}
 
+```
 4) Create Dashboard using search strings and type
+
+```
 http://localhost:7000/v1/gapi "PUT Request" with the following data
 {"name": "ashish09" , "unit_type": "docker", "metrics_list": ["container_memory_usage_bytes", "container_cpu_system_seconds_total"], "search_string": "httpd", "search_type": "image"}
 
+```
+
 5) Catalogue API usage
+
+```
 http://localhost:7000/v1/catalogue?unit_type=container
 http://localhost:7000/v1/catalogue?unit_type=dashboard
+```
 
 6) Metrics API usage
+
+```
 http://localhost:7000/v1/metrics?type=container
+```
 
 7) Exporter API usage
+
+```
 http://localhost:7000/v1/exporter
 {"source_system": "prometheus", "target_system": "ceilometer", "metrics_list": ["cpu"], "time_interval": "1", "unit_type": "docker",  "exporter_name": "ashish2"}
 
-Contributing to Galaxia
+```
+### Contributing to Galaxia
 -----------------------
+
 - Galaxia uses github to manage our code, bugs, features. Pick up any bug and share your code fix with us using github pull requests.
 - For any discussions or questions please reach us our mailing list @
 - We are also available on our irc channel @
