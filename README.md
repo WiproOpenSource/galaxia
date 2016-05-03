@@ -22,9 +22,11 @@ Galaxia is envisioned as a dynamic monitoring system with the following goals
 - [Galaxia Current Capabilities](https://github.com/WiproOpenSourcePractice/galaxia#galaxia-current-capabilities)
 - [Future Roadmap](https://github.com/WiproOpenSourcePractice/galaxia#future-roadmap)
 - [How Galaxia works?](https://github.com/WiproOpenSourcePractice/galaxia#how-galaxia-works)
-- [Set up an ALL-IN-ONE Galaxia]((https://github.com/WiproOpenSourcePractice/galaxia#set
+- [Setup Galaxia](https://github.com/WiproOpenSourcePractice/galaxia#setup-galaxia)
+- [Testing Galaxia Services](https://github.com/WiproOpenSourcePractice/galaxia#testing-galaxia-services)
+- [Contributing to Galaxia](https://github.com/WiproOpenSourcePractice/galaxia#contributing-to-galaxia)
 
-Why Galaxia
+### Why Galaxia
 -----------
 With the advent of cloud & container technologies monitoring needs for
 an enterprise has reached multiple folds. Today there is no single open
@@ -58,11 +60,11 @@ from various systems. Some of the pain points today organization face:
           co-relation b/w metrics from so many different sources.
 
 
-Proposed Architecture
+### ** Architecture **
 ---------------------
 < add a diagram here with one line explanation for each component >
 
-** Galaxia Current Capabilities
+### ** Galaxia Current Capabilities **
 ---------------------------
 1) Monitor your docker containers running on bare-metal, virtual machines or your cloud environment
 2) Also monitor the underlying infrastructure such as bare-metal, virtual machines or your cloud environment.
@@ -72,7 +74,7 @@ Proposed Architecture
    currently this functionality is available for OpenStack Ceilometer
 6) Ability to list down all the containers, hosts being monitored and their relationship.
 
-Future Roadmap
+### ** Future Roadmap **
 --------------
 - Remove dependency on promdash for dashboard rendering
 - Capability to group related dashboards
@@ -86,7 +88,7 @@ Future Roadmap
 - Co-relation between metrics and associated drilled down capabilities
 
 
-How Galaxia works?
+### ** How Galaxia works? **
 ------------------
 Galaxia works on the concept of exporter, aggregator and renderer. Here exporter is a docker container which exports
 metrics to the aggregator. Exporter unit runs on each node from which we wish to capture the metrics. Aggregator
@@ -94,10 +96,11 @@ collates metrics from all the exporter in its local database. Renderer connects 
 monitoring dashboard.
 
 
-Setup an ALL-IN-ONE Galaxia
+### ** Setup an ALL-IN-ONE Galaxia **
 ----------------------------
 Follow the steps below to setup Galaxia, the steps are specific to ubuntu
 operating system and hence will have to be modified accordingly for other OS.
+
 We are using vagrant box with ubuntu 14.04 to add up all the components
 To successfully operate Galaxia following softwares are required to be installed
 
@@ -143,7 +146,7 @@ By default rabbitmq server listens on 5672.
 Prometheus
 ----------
 - Download Prometheus version prometheus-0.16.1.linux-amd64.tar.gz from https://github.com/prometheus/prometheus/releases.
-  Here is the direct link https://github.com/prometheus/prometheus/releases/download/0.16.1/prometheus-0.16.1.linux-amd64.tar.gz
+  [Here is the direct link](https://github.com/prometheus/prometheus/releases/download/0.16.1/prometheus-0.16.1.linux-amd64.tar.gz)
 - Decompress the file prometheus-0.16.1.linux-amd64.tar.gz using the command "tar xzf prometheus-0.16.1.linux-amd64.tar.gz"
 - In the root directory create the file prometheus.yml with the following content
 
@@ -203,18 +206,30 @@ Steps to install Promdash
 - Configure database.yml "production tag" with host, username and password. Set the database tag to "galaxia".
 - Set the following environment variables, substitute the values for username, password & host
 
-.. code-block::
+```
 
     export DATABASE_URL="mysql2://username:password@host/galaxia"
     export RAILS_ENV="production"
+```
 
-- Now install bundler using the command "sudo apt-get install -y bundler"
-- sudo apt-get install -y libpq-dev mysql-client libmysqlclient-dev libsqlite3-dev
-- bundle install
-- bundle exec rake db:setup - This will set up db tables required for promdash
-- make build
-- bin/env bin/bundle exec bin/thin -p 3000  start
-  Promdash is listening on port 3000
+- Now install bundler using the command 
+
+```
+sudo apt-get install -y bundler"
+sudo apt-get install -y libpq-dev mysql-client libmysqlclient-dev libsqlite3-dev
+bundle install
+bundle exec rake db:setup 
+```
+
+This will set up db tables required for promdash
+
+```
+make build
+bin/env bin/bundle exec bin/thin -p 3000  start
+```
+
+Promdash is listening on port 3000
+
 - Launch the promdash page using the url http://localhost:3000 and add a new server, set the Uri as
   http://<ip_address>:9090 & Server type as prometheus.
 
@@ -225,6 +240,7 @@ Install docker using the link https://docs.docker.com/engine/installation/linux/
 cadvisor
 --------
 cadvisor is being used as a metrics exporter here, we use a docker image here
+
 - Download the cadvisor image from https://hub.docker.com/r/google/cadvisor/
 - Start cadvisor using the following command
 
@@ -258,9 +274,9 @@ Steps to install Galaxia
 
 ```
 
-This completes galaxia installation
+This completes galaxia installation.
 
-Starting galaxia services
+### Starting galaxia services
 ----------------------------
 Galaxia comes up with following services gapi, grenderer and gexporter. Let us start them one by one
 To test gexporter service you will need to setup OpenStack
@@ -289,7 +305,7 @@ To test gexporter service you will need to setup OpenStack
     gexporter --config-file etc/galaxia/galaxia.conf
 
     ```
-Testing Galaxia Services
+### Testing Galaxia Services
 ------------------------
 Currently galaxia supports containers and hence we need to start some containers on the host to test galaxia services.
 We will use httpd server(https://hub.docker.com/_/httpd/) images from docker hub for that
@@ -310,7 +326,9 @@ galaxia metrics list --type container
 galaxia dashboard create --metrics-list container_memory_usage_bytes --names-list sample_http --name tes --unit-type docker
 galaxia dashboard create --metrics-list container_memory_usage_bytes --search-string sample --search-type name --unit-type docker --name test1
 ```
+
 - Using curl command
+
 1) Create Dashboard
 
 ```
@@ -319,10 +337,12 @@ galaxia dashboard create --metrics-list container_memory_usage_bytes --search-st
 ```
 
 2) Update Dashboard
+
 ```
 http://localhost:7000/v1/gapi "POST Request" with the following data
 {"name": "ashish08" , "unit_type": "docker", "metrics_list": ["container_memory_usage_bytes", "container_cpu_system_seconds_total"], "names_list": ["httpd1_ecom1"]}
 ```
+
 3) Delete Dashboard
 
 ```
@@ -358,6 +378,7 @@ http://localhost:7000/v1/exporter
 {"source_system": "prometheus", "target_system": "ceilometer", "metrics_list": ["cpu"], "time_interval": "1", "unit_type": "docker",  "exporter_name": "ashish2"}
 
 ```
+
 ### Contributing to Galaxia
 -----------------------
 
