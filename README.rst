@@ -1,6 +1,7 @@
 =======
 GALAXIA
 =======
+
 Infrastructure Monitoring System
 --------------------------------
 
@@ -14,6 +15,14 @@ Galaxia is envisioned as a dynamic monitoring system with the following goals
 - Capability to bring in intelligence among metrics from various systems
 - Complete end to end microservice monitoring from application all the way to infrastructure
 
+### Index
+
+- [Why Galaxia](https://github.com/WiproOpenSourcePractice/galaxia#why-galaxia)
+- [Architecture](https://github.com/WiproOpenSourcePractice/galaxia#proposed-architecture)
+- [Galaxia Current Capabilities](https://github.com/WiproOpenSourcePractice/galaxia#galaxia-current-capabilities)
+- [Future Roadmap](https://github.com/WiproOpenSourcePractice/galaxia#future-roadmap)
+- [How Galaxia works?](https://github.com/WiproOpenSourcePractice/galaxia#how-galaxia-works)
+- [Set up an ALL-IN-ONE Galaxia]((https://github.com/WiproOpenSourcePractice/galaxia#set
 
 Why Galaxia
 -----------
@@ -53,7 +62,7 @@ Proposed Architecture
 ---------------------
 < add a diagram here with one line explanation for each component >
 
-Galaxia Current Capabilities
+** Galaxia Current Capabilities
 ---------------------------
 1) Monitor your docker containers running on bare-metal, virtual machines or your cloud environment
 2) Also monitor the underlying infrastructure such as bare-metal, virtual machines or your cloud environment.
@@ -85,7 +94,7 @@ collates metrics from all the exporter in its local database. Renderer connects 
 monitoring dashboard.
 
 
-Set up an ALL-IN-ONE Galaxia
+Setup an ALL-IN-ONE Galaxia
 ----------------------------
 Follow the steps below to setup Galaxia, the steps are specific to ubuntu
 operating system and hence will have to be modified accordingly for other OS.
@@ -114,15 +123,20 @@ sudo apt-get -y install python-pip
 mysql-server
 ------------
 Follow the steps below to install mysql-server on ubuntu
+```
 - sudo apt-get update
 - sudo apt-get install -y mysql-server
+```
 
 When prompted Set up username as "root" and password as "root".
 By default mysql server listens on port 3306.
 
 rabbitmq-server
 ---------------
+
+```
 sudo apt-get install -y rabbitmq-server
+```
 
 By default rabbitmq server listens on 5672.
 
