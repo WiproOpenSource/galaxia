@@ -306,3 +306,8 @@ Contributing to Galaxia
 - For any discussions or questions please reach us our mailing list @
 - We are also available on our irc channel @
 
+
+
+.. image:: https://badges.gitter.im/WiproOpenSourcePractice/galaxia.svg
+   :alt: Join the chat at https://gitter.im/WiproOpenSourcePractice/galaxia
+   :target: https://gitter.im/WiproOpenSourcePractice/galaxia?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
