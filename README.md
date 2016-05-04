@@ -74,7 +74,7 @@ from various systems. Some of the pain points today organization face:
    currently this functionality is available for OpenStack Ceilometer
 6) Ability to list down all the containers, hosts being monitored and their relationship.
 
-### Future Roadmap 
+### Future Roadmap
 --------------
 - Remove dependency on promdash for dashboard rendering
 - Capability to group related dashboards
@@ -88,7 +88,7 @@ from various systems. Some of the pain points today organization face:
 - Co-relation between metrics and associated drilled down capabilities
 
 
-### How Galaxia works? 
+### How Galaxia works?
 ------------------
 Galaxia works on the concept of exporter, aggregator and renderer. Here exporter is a docker container which exports
 metrics to the aggregator. Exporter unit runs on each node from which we wish to capture the metrics. Aggregator
@@ -96,7 +96,7 @@ collates metrics from all the exporter in its local database. Renderer connects 
 monitoring dashboard.
 
 
-### Setup an ALL-IN-ONE Galaxia 
+### Setup an ALL-IN-ONE Galaxia
 ----------------------------
 Follow the steps below to setup Galaxia, the steps are specific to ubuntu
 operating system and hence will have to be modified accordingly for other OS.
@@ -201,20 +201,20 @@ Promdash
 --------
 Steps to install Promdash
 
-- Install git using the command 
+- Install git using the command
 
 ```
 sudo apt-get install -y git
 git clone https://github.com/prometheus/promdash
 
 ```
-- In the root promdash directory run the command 
+- In the root promdash directory run the command
 
 ```
 cp config/database.yml.example config/database.yml
 
 ```
-- Configure database.yml "production tag" with host, username and password. 
+- Configure database.yml "production tag" with host, username and password.
 - Set the database tag to "galaxia".
 - Set the following environment variables, substitute the values for username, password & host
 
@@ -224,13 +224,13 @@ cp config/database.yml.example config/database.yml
     export RAILS_ENV="production"
 ```
 
-- Now install bundler using the command 
+- Now install bundler using the command
 
 ```
 sudo apt-get install -y bundler"
 sudo apt-get install -y libpq-dev mysql-client libmysqlclient-dev libsqlite3-dev
 bundle install
-bundle exec rake db:setup 
+bundle exec rake db:setup
 ```
 
 This will set up db tables required for promdash
@@ -295,23 +295,23 @@ To test gexporter service you will need to setup OpenStack
 
 
 Run the following commands to start gapi service
-    
+
     ```
      source openrc_example
      gapi --config-file etc/galaxia/galaxia.conf
-  
+
     ```
 
 
 Run the following commands to start grenderer service
-     
-    ``` 
+
+    ```
      source openrc_example
      grenderer --config-file etc/galaxia/galaxia.conf
     ```
-    
+
 Run the following commands to start gexporter service
-    
+
     ```
     source openrc_example
     gexporter --config-file etc/galaxia/galaxia.conf
@@ -330,7 +330,7 @@ sudo docker run --name sample_http1 -d  httpd
 
 ```
 - run some galaxia commands now
-    
+
 ```
 source openrc_example
 galaxia --help
@@ -398,8 +398,4 @@ http://localhost:7000/v1/exporter
 - For any discussions or questions please reach us our mailing list @
 - We are also available on our irc channel @
 
-
-
-.. image:: https://badges.gitter.im/WiproOpenSourcePractice/galaxia.svg
-   :alt: Join the chat at https://gitter.im/WiproOpenSourcePractice/galaxia
-   :target: https://gitter.im/WiproOpenSourcePractice/galaxia?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[![Join the chat at https://gitter.im/WiproOpenSourcePractice/openapphack](https://badges.gitter.im/WiproOpenSourcePractice/galaxia.svg)](https://gitter.im/WiproOpenSourcePractice/galaxia??utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
