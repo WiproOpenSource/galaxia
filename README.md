@@ -98,6 +98,34 @@ monitoring dashboard.
 
 ### Setup an ALL-IN-ONE Galaxia
 ----------------------------
+
+Galaxia can be installed in following 2 ways
+
+- Using Ansible
+- Manual Setup
+
+#### Using Ansible
+----------------
+
+We recommend using vagrant to run this installation steps.
+
+The install directory in galaxia source has the ansible script to install galaxia and all the dependent components. To run 
+this script the host needs to have [Ansible](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-ansible-on-ubuntu-14-04) installed.
+
+Once ansible is installed just run the command
+
+
+```
+ansible-playbook site.yml
+```
+
+This will setup an ALL-IN-ONE Galaxia with-in few minutes depending on your network speed.
+Once done skip to section [Testing Galaxia Services](https://github.com/WiproOpenSourcePractice/galaxia#testing-galaxia-services)
+
+
+#### Manual Setup
+----------------
+
 Follow the steps below to setup Galaxia, the steps are specific to ubuntu
 operating system and hence will have to be modified accordingly for other OS.
 
