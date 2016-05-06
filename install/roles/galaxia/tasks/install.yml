@@ -11,7 +11,6 @@
 - name: Install list of packages
   apt: name={{item}} state=installed
   with_items:
-       - python-pip
        - python-mysqldb
        - python-dev
 

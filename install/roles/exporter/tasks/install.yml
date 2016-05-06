@@ -1,4 +1,12 @@
 ---
+- name: Install list of packages
+  apt: name={{item}} state=installed
+  with_items:
+       - python-pip
+
+- name: Install python module
+  pip: name=docker-py
+
 - name: Install cadvisor
   docker:
      name: cadvisor
