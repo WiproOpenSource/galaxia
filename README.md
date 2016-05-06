@@ -116,11 +116,16 @@ Now set the following entry in /etc/ansible/hosts
 
 ```
 [galaxiainstall]
-localhost ansible_ssh_private_key_file=/home/ubuntu/ashish_keypair.pem
+localhost
 ```
 
-Once ansible is installed just run the command
+If you are on AWS than you need to add the following entry instead
 
+```
+[galaxiainstall]
+<hostname> ansible_ssh_private_key_file=<location_of_your_private_key>
+```
+Now run the command
 
 ```
 ansible-playbook site.yml
