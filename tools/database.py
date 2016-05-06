@@ -39,9 +39,11 @@ def main():
     print "Connecting to "+options.type + " database@"+ options.host
     engine = create_engine(db_url)
     conn = engine.connect()
-
-    print "Creating database galaxia"
-    conn.execute("CREATE DATABASE galaxia")
+    try:
+        print "Creating database galaxia"
+        conn.execute("CREATE DATABASE galaxia")
+    except Exception as ex:
+        pass
 
     print "Connecting to galaxia database"
     engine = create_engine(galaxia_db_url)
