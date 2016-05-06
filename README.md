@@ -112,6 +112,13 @@ We recommend using vagrant to run this installation steps.
 The install directory in galaxia source has the ansible script to install galaxia and all the dependent components. To run 
 this script the host needs to have [Ansible](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-ansible-on-ubuntu-14-04) installed.
 
+Now set the following entry in /etc/ansible/hosts
+
+```
+[galaxiainstall]
+localhost ansible_ssh_private_key_file=/home/ubuntu/ashish_keypair.pem
+```
+
 Once ansible is installed just run the command
 
 
