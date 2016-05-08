@@ -62,7 +62,8 @@ from various systems. Some of the pain points today organization face:
 
 ### Architecture
 ---------------------
-< add a diagram here with one line explanation for each component >
+![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/GalaxiaArchitecture.png)
+
 
 ### Galaxia Current Capabilities
 ---------------------------
