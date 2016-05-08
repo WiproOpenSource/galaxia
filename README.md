@@ -67,13 +67,13 @@ from various systems. Some of the pain points today organization face:
 
 ### Galaxia Current Capabilities
 ---------------------------
-1) Monitor your docker containers running on bare-metal, virtual machines or your cloud environment
-2) Also monitor the underlying infrastructure such as bare-metal, virtual machines or your cloud environment.
-3) On demand monitoring dashboard generation either through command line or an intutitive Graphical User Interface
-4) On demand monitoring dashboard generation using a regex search
-5) Export docker container metrics as a scheduled job to your favorite system for alerts, notifications & alarms,
+- Monitor your docker containers running on bare-metal, virtual machines or your cloud environment
+- Also monitor the underlying infrastructure such as bare-metal, virtual machines or your cloud environment.
+- On demand monitoring dashboard generation either through command line or an intutitive Graphical User Interface
+- On demand monitoring dashboard generation using a regex search
+- Export docker container metrics as a scheduled job to your favorite system for alerts, notifications & alarms,
    currently this functionality is available for OpenStack Ceilometer
-6) Ability to list down all the containers, hosts being monitored and their relationship.
+- Ability to list down all the containers, hosts being monitored and their relationship.
 
 ### Future Roadmap
 --------------
