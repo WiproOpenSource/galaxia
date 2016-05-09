@@ -2,7 +2,7 @@
 GALAXIA
 =======
 
-Infrastructure Monitoring System
+Universal Monitoring System
 --------------------------------
 
 Galaxia is envisioned as a dynamic monitoring system with the following goals
