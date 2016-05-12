@@ -17,11 +17,12 @@ Prometheus response parser
 """
 import json
 
-
 def get_names_list(resp):
     names_list = []
     metrics_list = []
     hosts_list = []
+    image_list = []
+    id_list = []
     result_list = json.loads(resp)['data']['result']
 
     for i in result_list:
@@ -29,8 +30,10 @@ def get_names_list(resp):
             names_list.append(i['metric'].get('name'))
             metrics_list.append(i['value'][1])
             hosts_list.append(i['metric'].get('instance').split(':')[0])
+            image_list.append(i['metric'].get('image'))
+            id_list.append(i['metric'].get('id'))
 
-    return names_list, metrics_list, hosts_list
+    return names_list, metrics_list, hosts_list, image_list, id_list
 
 
 def get_node_name_list(resp):

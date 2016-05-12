@@ -39,9 +39,10 @@ class CatalogueHandler(object):
                                                                      )))
 
     def container(self):
-        names_list, hosts_list = prometheus_helper.get_containers_by_hostname()
-        dictionary = dict(zip(names_list, hosts_list))
-        return json.dumps(dictionary)
+        list1 = ["Name", "Host", "Image", "Id"]
+        i=0
+        names_list, hosts_list, image_list, id_list = prometheus_helper.get_containers_by_hostname()
+        return json.dumps([{list1[i]: value for i, value in enumerate(x, i)} for x in zip(names_list,hosts_list,image_list,id_list)])
 
     def dashboard(self):
         sql_query = query_list.LIST_DASHBOARD
