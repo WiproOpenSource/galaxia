@@ -75,14 +75,17 @@ class Catalogue(cli_utils.BaseParser):
                                             self.catalogue_uri)
         resp = client.http_request('GET', target_url, self.headers, data)
         if unit_type == 'container':
-            header = ["Container", "Host"]
+            #header = ["Container", "Host", "ImageName", "ID"]
+            format_print.format_dict(resp.json(), "keys")
         if unit_type == 'dashboard':
             header = ["Name", "Dashboard_url"]
+            format_print.format_dict(resp.json(), header)
         if unit_type == 'exporter':
             header = ["EXPORTER_NAME", "EXPORTER_ID"]
+            format_print.format_dict(resp.json(), header)
         if unit_type == 'nodes':
             header = ["Instance_Name", "Host_Name"]
-        format_print.format_dict(resp.json(), header)
+            format_print.format_dict(resp.json(), header)
 
 
 class Directories(cli_utils.BaseParser):

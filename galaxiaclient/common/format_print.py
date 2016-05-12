@@ -26,8 +26,11 @@ def format_dict(dict1, header):
     :param dict1: dictionary object
     :param header: list of column names
     """
-    dict_list = []
-    for key, value in dict1.iteritems():
-        temp = [key, value]
-        dict_list.append(temp)
-    print tabulate(dict_list, headers=header, tablefmt="fancy_grid")
+    if header=="keys":
+        print tabulate(dict1, headers=header, tablefmt="fancy_grid")
+    else:
+        dict_list = []
+        for key, value in dict1.iteritems():
+            temp = [key, value]
+            dict_list.append(temp)
+        print tabulate(dict_list, headers=header, tablefmt="fancy_grid")
