@@ -64,7 +64,7 @@ class CatalogueHandler(object):
 
         return json.dumps(dict(result.fetchall()))
 
-    def nodes(self):
+    def node(self):
         names_list, nodename_list = prometheus_helper.get_names_list()
         dictionary = dict(zip(names_list, nodename_list))
         return json.dumps(dictionary)
