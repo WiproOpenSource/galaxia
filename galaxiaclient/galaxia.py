@@ -54,9 +54,9 @@ class Catalogue(cli_utils.BaseParser):
     Available Commands:
 
     galaxia catalogue list --unit-type container
-    galaxia catalogue list --unit-type dashboards
-    galaxia catalogue list --unit-type exporters
-    galaxia catalogue list --unit-type nodes
+    galaxia catalogue list --unit-type dashboard
+    galaxia catalogue list --unit-type exporter
+    galaxia catalogue list --unit-type node
     """
     headers = {
         "Content-Type": "application/json"
@@ -83,7 +83,7 @@ class Catalogue(cli_utils.BaseParser):
         if unit_type == 'exporter':
             header = ["EXPORTER_NAME", "EXPORTER_ID"]
             format_print.format_dict(resp.json(), header)
-        if unit_type == 'nodes':
+        if unit_type == 'node':
             header = ["Instance_Name", "Host_Name"]
             format_print.format_dict(resp.json(), header)
 
