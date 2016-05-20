@@ -435,8 +435,23 @@ http://localhost:7000/v1/exporter
 ### Contributing to Galaxia
 -----------------------
 
+
+
 - Galaxia uses github to manage our code, bugs, features. Pick up any bug and share your code fix with us using github pull requests.
 - For any discussions or questions please reach us our mailing list @
 - We are also available on our irc channel @
 
 [![Join the chat at https://gitter.im/WiproOpenSourcePractice/openapphack](https://badges.gitter.im/WiproOpenSourcePractice/galaxia.svg)](https://gitter.im/WiproOpenSourcePractice/galaxia??utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+
+#### Basic steps for contributing
+
+1.Fork the repository and clone it locally.
+Refer https://guides.github.com/activities/forking/ https://help.github.com/articles/syncing-a-fork/
+
+2.Create a branch - creating an environment where you can try out your ideas. This will not affect master branch. Commit your changes to your fork.
+Refer link https://guides.github.com/introduction/flow/
+
+3.Open pull requests from your fork to main repository.
+Refer https://guides.github.com/activities/contributing-to-open-source/
+
