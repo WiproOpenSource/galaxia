@@ -307,11 +307,11 @@ def main():
 
     galaxia catalogue list --unit-type container
             List all the currently monitored containers
-    galaxia catalogue list --unit-type dashboards
+    galaxia catalogue list --unit-type dashboard
             List all created dashboards
-    galaxia catalogue list --unit-type exporters
+    galaxia catalogue list --unit-type exporter
             List all created exporters
-    galaxia catalogue list --unit-type nodes
+    galaxia catalogue list --unit-type node
             List all the currently monitored nodes
     """
     parser = argparse.ArgumentParser(prog="galaxiaclient",
