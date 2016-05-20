@@ -199,6 +199,7 @@ class DashboardCommands(cli_utils.BaseParser):
                              --unit--type <valid value is docker>
     for docker supported search string type are instance, image, name
     for node supported search string type are instance, nodename(hostname) and domainname
+
     """
     url = "gapi"
     headers = {
@@ -215,6 +216,7 @@ class DashboardCommands(cli_utils.BaseParser):
         self.parser.add_argument('--search-string', help='Search String')
         self.parser.add_argument('--search-type', help='Search String')
         self.parser.add_argument('--unit-type', help='Type of unit, valid value is docker')
+        self.parser.add_argument('--exclude', help='Search excluding search string', required=False)
         args = self.parser.parse_args()
         if not (args.names_list or (args.search_string and args.search_type)):
             self.parser.error('add --names-list or (--search-string and --search-type)')
@@ -240,6 +242,7 @@ class DashboardCommands(cli_utils.BaseParser):
         self.parser.add_argument('--search-type', help='Search String')
         self.parser.add_argument('--unit-type', help='Type of unit,\
                                                      valid value is docker')
+        self.parser.add_argument('--exclude', help='Search excluding search string', required=False)
         args = self.parser.parse_args()
         if not (args.names_list or (args.search_string and args.search_type)):
             self.parser.error('add --names-list or (--search-string and\
@@ -293,8 +296,9 @@ def main():
 
     galaxia dashboard create --name <name_of_the_dashboard> --metrics-list <list_of_metrics>
                              --search-string <string_to_search> --search-type <type_of_search_string>
-                             --unit-type <valid value is docker>
-            Creates monitoring dashboard using the search string and search type
+                             --unit-type <valid value is docker> --exclude <valid value is 1>
+            Creates monitoring dashboard using the search string and search type. Here exclude is an
+            optional flag, setting exclude to 1 will plot dashboard for all except the search string
 
     galaxia exporter create --source-system <source_system> --target-system <target_system>
                             --metrics-list <list_of_metrics> --time-interval <time_interval>
