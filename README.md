@@ -100,6 +100,29 @@ monitoring dashboard.
 ### Setup an ALL-IN-ONE Galaxia
 ----------------------------
 
+We recommend using Vagrant to set up galaxia. Here are the steps to setup [Vagrant](https://www.godaddy.com/garage/tech/config/install-vagrant-ubuntu-14-04/) on ubuntu:
+
+- Run the following commands to setup vagrant
+
+```
+- sudo apt-get install virtualbox
+- sudo apt-get install vagrant
+```
+
+- Launch virtual box UI, on ubuntu this can be done in 2 ways either by running *virtualbox* from shell prompt or using ubuntu
+  search box.
+- Go to File->Preferences->Network->Host-Only Networks. Create a new network. Edit this network and provide the IPV4 address as
+  192.168.76.1. Save and exit the VirtualBox UI
+- curl https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/Vagrantfile > Vagrantfile
+- vagrant up
+- Login to vagrant box using the command
+
+```
+vagrant ssh galaxia
+```
+
+This brings up a virtual environment and now proceed with installing galaxia
+
 Galaxia can be installed in following 2 ways
 
 - Using Ansible
@@ -126,7 +149,13 @@ If you are on AWS than you need to add the following entry instead
 [galaxiainstall]
 <hostname> ansible_ssh_private_key_file=<location_of_your_private_key>
 ```
-Now run the command
+Clone the galaxia source code
+
+```
+git clone https://github.com/WiproOpenSourcePractice/galaxia
+```
+
+Go to install directory & run the command
 
 ```
 ansible-playbook site.yml
