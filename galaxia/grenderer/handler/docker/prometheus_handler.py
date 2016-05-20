@@ -32,8 +32,13 @@ def get_names_list(message):
                                                   ("aggregator_endpoint"),
                                                   query_url)
         current_time = str(datetime.datetime.now().isoformat())+"Z"
-        query = "container_last_seen{"+message["search_type"]+"=~"+'"' +\
+        if "exclude" in message.keys() and message['exclude']:
+            query = "container_last_seen{"+message["search_type"]+"!~"+'"' +\
                 message["search_string"]+'"'+"}"
+        else:
+            query = "container_last_seen{"+message["search_type"]+"=~"+'"' +\
+                message["search_string"]+'"'+"}"
+
         payload = {"query": query, "time": current_time}
         resp = client.http_request("GET", prom_request_url, headers, payload,
                                    None, None)

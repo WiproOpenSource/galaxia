@@ -128,7 +128,10 @@ class ApiHandler():
 
         name = kwargs['name']
         if not "names_list" in kwargs.keys() or kwargs['names_list'] is None:
-            names_list = kwargs['search_type']+"=~"+kwargs['search_string']
+            if "exclude" in kwargs.keys() and kwargs["exclude"]:
+                names_list = kwargs['search_type']+"!~"+kwargs['search_string']
+            else:
+                names_list = kwargs['search_type']+"=~"+kwargs['search_string']
         else:
             names_list = ','.join(kwargs['names_list'])
         metrics_list = ','.join(kwargs['metrics_list'])
