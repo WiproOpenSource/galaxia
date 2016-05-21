@@ -446,12 +446,27 @@ http://localhost:7000/v1/exporter
 
 #### Basic steps for contributing
 
-1.Fork the repository and clone it locally.
-Refer https://guides.github.com/activities/forking/ https://help.github.com/articles/syncing-a-fork/
+1.Fork the repository.
+  Go to 'Galaxia' project on github website and click on the 'Fork' button to create your fork.
+  ![Fork repository](/doc/Fork.png?raw=true "Fork repository")
 
-2.Create a branch - creating an environment where you can try out your ideas. This will not affect master branch. Commit your changes to your fork.
-Refer link https://guides.github.com/introduction/flow/
+2.Clone the repository locally.
+  ![Clone repository](/doc/clone.png?raw=true "Clone repository")
+  Copy your fork repository URL and run the following command from git bash.
+  `git clone <your-repository-url>`
+  
 
-3.Open pull requests from your fork to main repository.
-Refer https://guides.github.com/activities/contributing-to-open-source/
+3.Create a branch - creating an environment where you can try out your ideas. This will not affect master branch.
+  `git branch <branch-name>`
+  `git checkout <branch-name>`
+
+ 4.Make your changes and test it out. Once you are ready to commit, follow the next step.
+ 
+ 5.Commit your changes to your fork.
+   `git add <file-name>`
+   `git commit -m "your commit message"`
+   `git push origin <branch-name>`
+
+ 6.Open pull requests from your fork to main repository from github website.
+   
 
