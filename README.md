@@ -467,13 +467,12 @@ http://localhost:7000/v1/exporter
 
 
 - Galaxia uses github to manage our code, bugs, features. Pick up any bug and share your code fix with us using github pull requests.
+  For more details look into - [Working with Pull Requests](https://github.com/WiproOpenSourcePractice/galaxia#Working-with-Pull-Requests) 
 - For any discussions or questions please reach us our mailing list @
 - We are also available on our irc channel @
 
-[![Join the chat at https://gitter.im/WiproOpenSourcePractice/openapphack](https://badges.gitter.im/WiproOpenSourcePractice/galaxia.svg)](https://gitter.im/WiproOpenSourcePractice/galaxia??utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-
-#### Basic steps for contributing
+### Working with Pull Requests
 
 1.Fork the repository.
   
@@ -509,3 +508,4 @@ http://localhost:7000/v1/exporter
  6.Open pull requests from your fork to main repository from github website.
    
 
+[![Join the chat at https://gitter.im/WiproOpenSourcePractice/openapphack](https://badges.gitter.im/WiproOpenSourcePractice/galaxia.svg)](https://gitter.im/WiproOpenSourcePractice/galaxia??utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
