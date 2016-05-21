@@ -467,7 +467,7 @@ http://localhost:7000/v1/exporter
 
 
 - Galaxia uses github to manage our code, bugs, features. Pick up any bug and share your code fix with us using github pull requests.
-  For more details look into - [Working with Pull Requests](https://github.com/WiproOpenSourcePractice/galaxia#Working-with-Pull-Requests) 
+  For more details look into - [Working with Pull Requests](https://github.com/WiproOpenSourcePractice/galaxia#working-with-pull-requests) 
 - For any discussions or questions please reach us our mailing list @
 - We are also available on our irc channel @
 
