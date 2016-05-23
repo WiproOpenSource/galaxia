@@ -67,9 +67,13 @@ class Catalogue(cli_utils.BaseParser):
     def list(self):
         self.parser.add_argument('--unit-type', help='Type of unit valid value\
                                                      is docker', required=True)
+        self.parser.add_argument('--search-type', help='search type', required=False)
+        self.parser.add_argument('--search-string', help='search string', required=False)
         args = self.parser.parse_args()
         unit_type = vars(args)['unit_type']
-        data = {"unit_type": unit_type}
+        search_type = vars(args)['search_type']
+        search_string = vars(args)['search_string']
+        data = {'unit_type': unit_type, 'search_type': search_type, 'search_string': search_string}
         galaxia_api_endpoint = os.getenv("galaxia_api_endpoint")
         target_url = client.concatenate_url(galaxia_api_endpoint,
                                             self.catalogue_uri)
