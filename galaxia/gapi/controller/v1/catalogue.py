@@ -25,6 +25,8 @@ class CatalogueController(object):
     @expose(generic=True)
     def index(self):
         unit_type = request.GET.get('unit_type')
+        search_string = request.GET.get('search_string')
+        search_type = request.GET.get('search_type')
         handler = catalogue_handler.CatalogueHandler()
-        unit_list = handler.get_units(unit_type)
+        unit_list = handler.get_units(unit_type, search_string, search_type)
         return unit_list

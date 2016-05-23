@@ -27,9 +27,9 @@ log = logging.getLogger(__name__)
 
 class CatalogueHandler(object):
 
-    def get_units(self, unit_type):
+    def get_units(self, unit_type, search_string, search_type):
         if unit_type in self._function:
-            return self._function[unit_type]()
+            return self._function[unit_type](search_string,search_type)
 
     @property
     def _function(self):
@@ -38,13 +38,13 @@ class CatalogueHandler(object):
                     if not attr.startswith('_') and callable(getattr(self, attr
                                                                      )))
 
-    def container(self):
+    def container(self, search_string, search_type):
         list1 = ["Name", "Host", "Image", "Id"]
         i=0
-        names_list, hosts_list, image_list, id_list = prometheus_helper.get_containers_by_hostname()
+        names_list, hosts_list, image_list, id_list = prometheus_helper.get_containers_by_hostname(search_string,search_type)
         return json.dumps([{list1[i]: value for i, value in enumerate(x, i)} for x in zip(names_list,hosts_list,image_list,id_list)])
 
-    def dashboard(self):
+    def dashboard(self, search_string, search_type):
         sql_query = query_list.LIST_DASHBOARD
         conn = sql_helper.engine.connect()
         try:
@@ -54,7 +54,7 @@ class CatalogueHandler(object):
 
         return json.dumps(dict(result.fetchall()))
 
-    def exporter(self):
+    def exporter(self, search_string, search_type):
         sql_query = query_list.LIST_EXPORTER
         conn = sql_helper.engine.connect()
         try:
@@ -64,7 +64,7 @@ class CatalogueHandler(object):
 
         return json.dumps(dict(result.fetchall()))
 
-    def node(self):
-        names_list, nodename_list = prometheus_helper.get_names_list()
+    def node(self, search_string, search_type):
+        names_list, nodename_list = prometheus_helper.get_names_list(search_string, search_type)
         dictionary = dict(zip(names_list, nodename_list))
         return json.dumps(dictionary)

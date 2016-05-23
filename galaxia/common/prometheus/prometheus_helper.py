@@ -19,6 +19,10 @@ from galaxia.common.prometheus import response_parser
 
 import os
 import datetime
+import logging
+
+
+log = logging.getLogger(__name__)
 
 query_url = "query"
 
@@ -50,11 +54,16 @@ def get_metrics(expression):
         return names_list, metrics_list
 
 
-def get_containers_by_hostname():
+def get_containers_by_hostname(search_string, search_type):
         prom_request_url = client.concatenate_url(
         os.getenv("aggregator_endpoint"), query_url)
         current_time = str(datetime.datetime.now().isoformat())+"Z"
-        query = "container_last_seen"
+        if search_string is None or search_type is None:
+            query = "container_last_seen"
+        else:
+            query = "container_last_seen{"+search_type+"=~"+'"' +\
+                search_string+'"'+"}"
+
         payload = {"query": query, "time": current_time}
         resp = client.http_request("GET", prom_request_url, headers, payload,
                                    None, None)
@@ -62,13 +71,17 @@ def get_containers_by_hostname():
         return names_list, hosts_list, image_list, id_list
 
 
-def get_names_list():
+def get_names_list(search_string, search_type):
 
         prom_request_url = client.concatenate_url(os.getenv
                                                   ("aggregator_endpoint"),
                                                   query_url)
         current_time = str(datetime.datetime.now().isoformat())+"Z"
-        query = "node_uname_info"
+        if search_string is None or search_type is None:
+            query = "node_uname_info"
+        else:
+            query = "node_uname_info{"+search_type+"=~"+'"' + \
+                search_string+'"'+"}"
         payload = {"query": query, "time": current_time}
         resp = client.http_request("GET", prom_request_url, headers,
                                    payload, None, None)
