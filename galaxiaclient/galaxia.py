@@ -166,6 +166,7 @@ class MetricsCommands(cli_utils.BaseParser):
     }
 
     metrics_uri = "metrics"
+    sample_uri = "metrics/sample"
 
     def list(self):
         resp = None
@@ -180,6 +181,27 @@ class MetricsCommands(cli_utils.BaseParser):
             resp = client.http_request('GET', target_url, self.headers, data)
             headers = ["NAME", "DESCRIPTION"]
             print "List of supported metrics for "+unit_type
+            format_print.format_dict(resp.json(), headers)
+        except Exception as ex:
+            pass
+
+    def sample(self):
+        resp = None
+        self.parser.add_argument('--type', help="Type of unit valid values are\
+                                containers, nodes", choices=['container'], required=True)
+        self.parser.add_argument('--search-string', help='Search String', required=False)
+        self.parser.add_argument('--search-type', help='Search String', required=False)
+        self.parser.add_argument('--meter-name', help='Name of the meter', required=True)
+        args = self.parser.parse_args()
+        data = {"type": vars(args)['type'], "search_string": vars(args)['search_string'],
+                "search_type": vars(args)['search_type'] , "meter_name": vars(args)['meter_name']}
+        galaxia_api_endpoint = os.getenv("galaxia_api_endpoint")
+        target_url = client.concatenate_url(galaxia_api_endpoint, self.sample_uri)
+        try:
+            resp = client.http_request('GET', target_url, self.headers, data)
+            headers = ["NAME", "VALUE"]
+            print "Current "+ vars(args)['meter_name']
+            #print "Current "+unit_type
             format_print.format_dict(resp.json(), headers)
         except Exception as ex:
             pass
