@@ -78,6 +78,16 @@ class MetricsController(object):
         resp = handler.get_metrics(unit_type)
         return resp
 
+    @expose()
+    def sample(self):
+        meter_name = request.GET.get('meter_name')
+        search_string = request.GET.get('search_string')
+        search_type = request.GET.get('search_type')
+        type = request.GET.get('type')
+        log.info("Received request to get sample for meter ") #+meter_name)
+        handler = api_handler.ApiHandler()
+        resp = handler.get_sample(meter_name, search_string, search_type, type)
+        return resp
 
 class MetricsExporter(object):
     @expose(generic=True, template='index.html')

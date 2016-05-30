@@ -26,6 +26,7 @@ from oslo_config import cfg
 from galaxia.common.rpc import client
 from galaxia.gdata.common import query_list
 from galaxia.gdata.common import sql_helper
+from galaxia.common.prometheus import prometheus_helper
 
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -185,6 +186,19 @@ class ApiHandler():
                  processed" % query_type)
 
         return json.dumps(dict(result.fetchall()))
+
+    def get_sample(self, meter_name, search_string, search_type, type):
+
+        if search_string is None or search_type is None:
+            expr = meter_name
+        else:
+            expr = meter_name+"{"+search_type+"=~"+'"' +\
+                search_string+'"'+"}"
+
+        if type == 'container':
+            names_list, metrics_list = prometheus_helper.get_metrics(expr)
+            dictionary = dict(zip(names_list, metrics_list))
+            return json.dumps(dictionary)
 
     def create_metrics_exporter(self, **kwargs):
         """
