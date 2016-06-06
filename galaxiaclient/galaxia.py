@@ -299,6 +299,41 @@ class DashboardCommands(cli_utils.BaseParser):
             pass
 
 
+class StatusCommands(cli_utils.BaseParser):
+    """
+    Command to retrieve availability status of a container
+
+    Available Commands:
+
+    galaxia status list --unit-type container --search-type <image/name> --search-string <search_string>
+    --time-interval <in minutes/hours/days/weeks>
+    """
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    status_uri = "status"
+
+    def list(self):
+        self.parser.add_argument('--unit-type', help='Type of unit valid value\
+                                                     is docker', required=True)
+        self.parser.add_argument('--search-type', help='search type', required=False)
+        self.parser.add_argument('--search-string', help='search string', required=False)
+        self.parser.add_argument('--time-interval', help='Time Interval', required=False)
+        args = self.parser.parse_args()
+        unit_type = vars(args)['unit_type']
+        search_type = vars(args)['search_type']
+        search_string = vars(args)['search_string']
+        time_interval = vars(args)['time_interval']
+        data = {'unit_type': unit_type, 'search_type': search_type, 'search_string': search_string, 'time_interval': time_interval}
+        galaxia_api_endpoint = os.getenv("galaxia_api_endpoint")
+        target_url = client.concatenate_url(galaxia_api_endpoint,
+                                            self.status_uri)
+        resp = client.http_request('GET', target_url, self.headers, data)
+        if unit_type == 'container':
+            #header = ["Container", "Host", "ImageName", "ID"]
+            format_print.format_dict(resp.json(), "keys")
+
 def main():
     """
     This is the galaxia client help manual
@@ -339,6 +374,9 @@ def main():
             List all created exporters
     galaxia catalogue list --unit-type node
             List all the currently monitored nodes
+    galaxia status list --unit-type container --search-type <image/name> --search-string <search_string>
+    --time-interval <in minutes/hours/days/weeks>
+            Command to retrieve availability status of a container
     """
     parser = argparse.ArgumentParser(prog="galaxiaclient",
                                      description="galaxia helper manual",
@@ -348,7 +386,8 @@ def main():
         "dashboard": DashboardCommands,
         "metrics": MetricsCommands,
         "exporter": MetricsExporter,
-        "catalogue": Catalogue
+        "catalogue": Catalogue,
+        "status": StatusCommands
     }
 
     options = modules.keys()
