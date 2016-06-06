@@ -18,6 +18,7 @@ API call router
 
 from galaxia.gapi.controller.v1 import api
 from galaxia.gapi.controller.v1 import catalogue
+from galaxia.gapi.controller.v1 import status
 
 
 class Controller(object):
@@ -25,3 +26,4 @@ class Controller(object):
     metrics = api.MetricsController()
     exporter = api.MetricsExporter()
     catalogue = catalogue.CatalogueController()
+    status = status.StatusController()

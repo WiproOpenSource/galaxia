@@ -104,7 +104,7 @@ def parse_http_response(resp, request_url):
     elif resp.status_code > 200:
         log.info("Request was accepted for processing for resource @ %s with\
                  http status code %s" % (request_url, resp.status_code))
-        raise Exception
+    #    raise Exception
 
     else:
         log.error("Unable to process the request for resource @ %s with http\

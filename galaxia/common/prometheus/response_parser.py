@@ -46,3 +46,22 @@ def get_node_name_list(resp):
         nodename_list.append(i['metric'].get('nodename'))
 
     return instance_list, nodename_list
+
+
+def get_names_with_status_list(resp, threshold_time):
+    names_list = []
+    status_list = []
+    result_list = json.loads(resp)['data']['result']
+
+    for i in result_list:
+        if i['metric'].get('image'):
+            names_list.append(i['metric'].get('name'))
+            t1 = long(i['value'][0])
+            t2 = long(i['value'][1])
+            c1 = long(threshold_time)
+            if t1-t2 > c1:
+                status_list.append('off')
+            else:
+                status_list.append('on')
+
+    return names_list, status_list
