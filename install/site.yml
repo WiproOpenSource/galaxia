@@ -10,4 +10,6 @@
     - { role: docker,        tags: docker }
     - { role: exporter,      tags: exporter }
     - { role: galaxia,       tags: galaxia }
+    - { role: galaxiaui,     tags: galaxiaui }
+    - { role: nodejs,        tags: nodejs }
     
