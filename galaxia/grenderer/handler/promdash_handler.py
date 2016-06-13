@@ -123,4 +123,4 @@ def draw_dashboard(message):
                  % message['name'])
     else:
         log.info("Dashboard creation for %s application is unsuccessful with\
-                 http status code %s" % message['name'], resp.status_code)
+                 http status code %s" % (message['name'], resp.status_code))
