@@ -78,9 +78,18 @@ class ApiHandler():
         :param kwargs:
         :return:
         """
+        names_list = None
+        search_string = None
+        search_type = None
+
+        # TBD - adding exclude as part of update dashboard
+        #exclude = 0
+
         name = kwargs['name']
         if kwargs['names_list'] is None:
-            names_list = kwargs['search_type']+"=~"+kwargs['search_string']
+            search_string = kwargs['search_string']
+            search_type = kwargs['search_type']
+            #names_list = kwargs['search_type']+"=~"+kwargs['search_string']
         else:
             names_list = ','.join(kwargs['names_list'])
         metrics_list = ','.join(kwargs['metrics_list'])
@@ -90,7 +99,7 @@ class ApiHandler():
         create_datetime = str(datetime.datetime.now())
 
         sql_query = query_list.UPDATE_DASHBOARD
-        params = [names_list, metrics_list, create_datetime, name]
+        params = [names_list, metrics_list, search_string, search_type, create_datetime, name]
         try:
             conn = sql_helper.engine.connect()
             conn.execute(sql_query, params)
@@ -126,15 +135,23 @@ class ApiHandler():
         CONF.set_override('topic', CONF.gapi.topic, opt_group)
         CONF.set_override('rabbitmq_host', CONF.gapi.rabbitmq_host, opt_group)
         """
+        names_list = None
+        search_string = None
+        search_type = None
+        exclude = 0
 
         name = kwargs['name']
         if not "names_list" in kwargs.keys() or kwargs['names_list'] is None:
+            search_type = kwargs['search_type']
+            search_string = kwargs['search_string']
             if "exclude" in kwargs.keys() and kwargs["exclude"]:
-                names_list = kwargs['search_type']+"!~"+kwargs['search_string']
-            else:
-                names_list = kwargs['search_type']+"=~"+kwargs['search_string']
+                #names_list = kwargs['search_type']+"!~"+kwargs['search_string']
+                exclude = 1
+            #else:
+                #names_list = kwargs['search_type']+"=~"+kwargs['search_string']
         else:
             names_list = ','.join(kwargs['names_list'])
+
         metrics_list = ','.join(kwargs['metrics_list'])
         d_url = os.getenv('renderer_endpoint') + name
         status = "In Progress"
@@ -142,8 +159,8 @@ class ApiHandler():
         create_datetime = str(datetime.datetime.now())
 
         sql_query = query_list.INSERT_INTO_DASHBOARD
-        params = [name, names_list, metrics_list, d_url, status,
-                  create_datetime, create_datetime]
+        params = [name, names_list, metrics_list, search_string, search_type, d_url, status,
+                  create_datetime, create_datetime, exclude]
         try:
             conn = sql_helper.engine.connect()
             conn.execute(sql_query, params)

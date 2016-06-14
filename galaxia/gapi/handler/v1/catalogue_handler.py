@@ -51,8 +51,31 @@ class CatalogueHandler(object):
             result = conn.execute(sql_query)
         except SQLAlchemyError as ex:
             return "Unable to get the dashboard list because of database exception"
+        k_list = result.keys()
+        r_list = []
+        r = result.fetchone()
+        while r is not None:
+            r_list.append(dict(zip(k_list,r)))
+            r=result.fetchone()
+        temp_json = json.dumps(r_list)
+        abc = json.loads(temp_json)
 
-        return json.dumps(dict(result.fetchall()))
+        for x in abc:
+            values = x['NAMES_LIST'].split(',')
+            temp1= []
+            for i in values:
+                temp1.append(i)
+            x['NAMES_LIST'] = temp1
+            values = x['METRICS_LIST'].split(',')
+            temp2= []
+            for i in values:
+                temp2.append(i)
+            x['METRICS_LIST'] = temp2
+
+        return json.dumps(abc)
+
+
+       # return json.dumps(dict(result.fetchall()))
 
     def exporter(self, search_string, search_type):
         sql_query = query_list.LIST_EXPORTER
