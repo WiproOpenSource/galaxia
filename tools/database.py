@@ -51,9 +51,10 @@ def main():
 
     print "Creating Dashboard Table in galaxia database"
     conn.execute("CREATE TABLE DASHBOARD(NAME VARCHAR(20),\
-                 CONTAINERS VARCHAR(500), METRICS VARCHAR(50),\
+                     NAMES_LIST VARCHAR(500), METRICS_LIST VARCHAR(500),\
+                 SEARCH_STRING VARCHAR(100), SEARCH_TYPE VARCHAR(20),\
                  DASHBOARD_URL VARCHAR(50), STATUS VARCHAR(15),\
-                 DATE_CREATED DATETIME, DATE_UPDATED DATETIME,\
+                 DATE_CREATED DATETIME, DATE_UPDATED DATETIME, EXCLUDE VARCHAR(2),\
                  PRIMARY KEY(NAME))")
 
     print "Creating Metrics Table in galaxia database"
