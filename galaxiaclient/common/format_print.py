@@ -27,10 +27,10 @@ def format_dict(dict1, header):
     :param header: list of column names
     """
     if header=="keys":
-        print tabulate(dict1, headers=header, tablefmt="fancy_grid")
+        print tabulate(dict1, headers=header, tablefmt="fancy_grid", missingval="None")
     else:
         dict_list = []
         for key, value in dict1.iteritems():
             temp = [key, value]
             dict_list.append(temp)
-        print tabulate(dict_list, headers=header, tablefmt="fancy_grid")
+        print tabulate(dict_list, headers=header, tablefmt="fancy_grid", missingval="None")
