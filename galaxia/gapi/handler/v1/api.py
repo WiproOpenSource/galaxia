@@ -86,7 +86,7 @@ class ApiHandler():
         #exclude = 0
 
         name = kwargs['name']
-        if kwargs['names_list'] is None:
+        if not "names_list" in kwargs.keys() or kwargs['names_list'] is None:
             search_string = kwargs['search_string']
             search_type = kwargs['search_type']
             #names_list = kwargs['search_type']+"=~"+kwargs['search_string']
