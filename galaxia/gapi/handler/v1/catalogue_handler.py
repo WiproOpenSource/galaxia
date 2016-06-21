@@ -61,11 +61,13 @@ class CatalogueHandler(object):
         abc = json.loads(temp_json)
 
         for x in abc:
-            values = x['NAMES_LIST'].split(',')
-            temp1= []
-            for i in values:
-                temp1.append(i)
-            x['NAMES_LIST'] = temp1
+            if x['NAMES_LIST'] is not None:
+                values = x['NAMES_LIST'].split(',')
+                temp1= []
+                for i in values:
+                    temp1.append(i)
+                x['NAMES_LIST'] = temp1
+
             values = x['METRICS_LIST'].split(',')
             temp2= []
             for i in values:
