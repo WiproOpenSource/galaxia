@@ -90,6 +90,8 @@ from various systems. Some of the pain points today organization face:
 
 ### Galaxia Screenshots
 -----------------------
+By default galaxia comes with promdash as the dashboard provider. Below are the screenshots from [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui)
+. This is a gui client which consumes galaxia api.
 ![Containers](/doc/1.png?raw=true "Containers")
 ![Containers](/doc/2.png?raw=true "Containers")
 ![Containers](/doc/3.png?raw=true "Containers")
