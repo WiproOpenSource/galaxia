@@ -88,6 +88,13 @@ from various systems. Some of the pain points today organization face:
 - Capability to segregate dashboards as per user profile
 - Co-relation between metrics and associated drilled down capabilities
 
+### Galaxia Screenshots
+-----------------------
+![Containers](/doc/1.png?raw=true "Containers")
+![Containers](/doc/2.png?raw=true "Containers")
+![Containers](/doc/3.png?raw=true "Containers")
+![Containers](/doc/4.png?raw=true "Containers")
+![Containers](/doc/5.png?raw=true "Containers")
 
 ### How Galaxia works?
 ------------------
