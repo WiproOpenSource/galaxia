@@ -1,1 +1,2 @@
 include galaxia/templates/promdash.json
+include galaxia/templates/prometheus.yml
