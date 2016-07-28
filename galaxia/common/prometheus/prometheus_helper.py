@@ -114,3 +114,22 @@ def get_containers_by_status(search_string, search_type, time_interval, status, 
         names_list, status_list = response_parser.get_names_with_status_list(resp.text, threshold_time)
         return names_list, status_list
 
+def reload_prometheus_config(host_port):
+    url = "http://"+host_port+"/-/reload"
+    resp = client.http_request("POST", url, headers, None, None, None)
+    if resp.status_code!=200:
+        return False
+    else:
+        return True
+
+
+def get_labels(meter_name):
+    prom_request_url = client.concatenate_url(
+        os.getenv("aggregator_endpoint"), query_url)
+    current_time = str(datetime.datetime.now().isoformat())+"Z"
+    payload = {"query": meter_name, "time": current_time}
+    resp = client.http_request("GET", prom_request_url, headers, payload,
+                                   None, None)
+    #log.info(resp.text)
+    labels_list = response_parser.get_labels(meter_name, resp.text)
+    return labels_list

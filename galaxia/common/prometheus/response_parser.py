@@ -65,3 +65,36 @@ def get_names_with_status_list(resp, threshold_time):
                 status_list.append('on')
 
     return names_list, status_list
+
+def get_jmx_names_list(resp):
+    instance_list = []
+    job_list = []
+    labels_list = []
+
+    result_list = json.loads(resp)['data']['result']
+
+    #TODO Add implementation for labels_list
+    for i in result_list:
+        if i['value'][1] == 0:
+            instance_list.append(i['metric'].get('instance').split(':')[0])
+            job_list.append(i['metric'].get('job'))
+
+    return instance_list, job_list
+
+
+def get_labels(meter_name, resp):
+    labels = []
+    result_list = json.loads(resp)['data']['result']
+
+    for i in result_list:
+        label_list=[]
+        for key,value in i['metric'].iteritems():
+            if key == "__name__" or key == "instance" or key == "job":
+                pass
+            else:
+                label_string = '"'+ key +'"' +':'+'"'+value+'"'
+                label_list.append(label_string)
+        json_obj = {'label': label_list}
+        labels.append(json_obj)
+    json_obj = {'name': meter_name, 'labels': labels}
+    return json_obj

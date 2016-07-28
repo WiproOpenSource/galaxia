@@ -16,10 +16,12 @@
 
 import json
 import os
+import logging
 
 import galaxia.templates as template_data
+from galaxia.common.prometheus import metrics_helper
 
-
+log = logging.getLogger(__name__)
 def create_json(name, unit_list, metrics_list, unit_type):
     """
     Creates json for promdash
@@ -66,7 +68,7 @@ def create_json(name, unit_list, metrics_list, unit_type):
         widget["resolution"] = widgets_resolution
         widget["endTime"] = None
 
-        for j in metrics_list:
+        for j in json.loads(json.dumps(metrics_list)):
             expression = {}
             legendFormatString = {}
             axe = {}
@@ -89,14 +91,16 @@ def create_json(name, unit_list, metrics_list, unit_type):
             expression["serverID"] = expressions_server_id
 
             if unit_type == 'docker':
-                expression["expression"] = j + '{' + 'name=' + '"' + i + '"' + '}'
+                expression["expression"] = metrics_helper.get_metrics_with_labels(j, "name", i)
             elif unit_type == 'node':
-                expression["expression"] = j + '{' + 'instance=~' + '"' + i + '"' + '}'
+                expression["expression"] = metrics_helper.get_metrics_with_labels(j, "instance", i)
+            elif unit_type == 'jmx':
+                expression["expression"] = metrics_helper.get_metrics_with_labels(j, "instance", i)
 
             expression["legendID"] = legend_id
             expression["axisID"] = 1
             legendFormatString["id"] = legend_id
-            legendFormatString["name"] = j
+            legendFormatString["name"] = j['name']
 
             axes_id += 1
 
