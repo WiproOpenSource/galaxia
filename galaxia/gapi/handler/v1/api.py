@@ -27,6 +27,7 @@ from galaxia.common.rpc import client
 from galaxia.gdata.common import query_list
 from galaxia.gdata.common import sql_helper
 from galaxia.common.prometheus import prometheus_helper
+from galaxia.common.prometheus import metrics_helper
 
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -152,7 +153,7 @@ class ApiHandler():
         else:
             names_list = ','.join(kwargs['names_list'])
 
-        metrics_list = ','.join(kwargs['metrics_list'])
+        metrics_list = ','.join(str(kwargs['metrics_list']))
         d_url = os.getenv('renderer_endpoint') + name
         status = "In Progress"
 
@@ -204,13 +205,18 @@ class ApiHandler():
 
         return json.dumps(dict(result.fetchall()))
 
-    def get_sample(self, meter_name, search_string, search_type, type):
+    def get_sample(self, **kwargs):# metrics_json, search_string, search_type, type):
+        meter_name = kwargs['meter_name']
+        search_string = kwargs['search_string']
+        search_type = kwargs['search_type']
+        type = kwargs['type']
 
         if search_string is None or search_type is None:
-            expr = meter_name
+            expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), None, None)
         else:
-            expr = meter_name+"{"+search_type+"=~"+'"' +\
-                search_string+'"'+"}"
+            expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), search_type, search_string)
+            #expr = meter_name+"{"+search_type+"=~"+'"' +\
+             #   search_string+'"'+"}"
 
         if type == 'container':
             names_list, metrics_list = prometheus_helper.get_metrics(expr)
