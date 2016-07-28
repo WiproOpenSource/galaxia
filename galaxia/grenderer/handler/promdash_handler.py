@@ -31,7 +31,8 @@ import importlib
 
 metrics_handlers = {
         'docker': "galaxia.grenderer.handler.docker.prometheus_handler",
-        'node': "galaxia.grenderer.handler.node.prometheus_handler"
+        'node': "galaxia.grenderer.handler.node.prometheus_handler",
+        'jmx': "galaxia.grenderer.handler.app.jmx.prometheus_handler"
     }
 
 PROMDASH_OPTS = [
@@ -96,6 +97,7 @@ def draw_dashboard(message):
 
     dict1 = pj.create_json(message['name'], names_list,
                            message['metrics_list'], message['unit_type'])
+    log.info(dict1)
 
     if not is_dashboard_present:
         try:
