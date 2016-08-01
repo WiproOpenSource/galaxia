@@ -242,7 +242,7 @@ def main(target):
     for lines in content:
         if "HELP" in lines:
             if bool(dict1):
-                 dict1.update({'labels': dict2})
+                 #dict1.update({'labels': dict2})
                  list_of_jsons.append(dict1)
                  dict1={}
                  dict2=[]
@@ -257,7 +257,7 @@ def main(target):
             else:
                 dict2.append(family.samples)
     if bool(dict1):
-        dict1.update({'labels': dict2})
+        #dict1.update({'labels': dict2})
         list_of_jsons.append(dict1)
 
     return list_of_jsons
