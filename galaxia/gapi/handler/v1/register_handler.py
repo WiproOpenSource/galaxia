@@ -16,13 +16,37 @@ import logging
 import os
 import galaxia.templates as template_data
 from galaxia.common.yaml import yaml_helper
-from galaxia.common.paramiko import paramiko_helper
+#from galaxia.common.paramiko import paramiko_helper
 from galaxia.common.prometheus import prometheus_helper
 from galaxia.common.prometheus import metrics_parser
 from os.path import expanduser
 import json
 import paramiko
 import scp
+from oslo_config import cfg
+
+
+# Register options for the api service
+API_SERVICE_OPTS = [
+    cfg.StrOpt('username',
+               default='vagrant',
+               help='The username for the prometheus server host'),
+    cfg.StrOpt('password',
+               default='vagrant',
+               help='The password the prometheus server host'),
+    cfg.StrOpt('prometheus_template',
+               default='/etc/prometheus/prometheus.yml',
+               help='File location of master prometheus template')
+]
+
+CONF = cfg.CONF
+opt_group = cfg.OptGroup(name='gapi', title='Options for the api service')
+CONF.register_group(opt_group)
+CONF.register_opts(API_SERVICE_OPTS, opt_group)
+
+CONF.set_override('username', CONF.gapi.username, opt_group)
+CONF.set_override('password', CONF.gapi.password, opt_group)
+CONF.set_override('prometheus_template', CONF.gapi.prometheus_template, opt_group)
 
 
 log = logging.getLogger(__name__)
@@ -32,9 +56,10 @@ headers = {
     }
 
 
-class RegisterHandler(object):
+class RegisterHandler():
 
     def register(self, **kwargs):
+        log.info(kwargs)
         unit_type = kwargs['unit_type']
         if unit_type in self._function:
             return self._function[unit_type](**kwargs)
@@ -47,6 +72,18 @@ class RegisterHandler(object):
                                                                      )))
 
     def app(self, **kwargs):
+        return self.onboarding('app', **kwargs)
+
+    def node(self, **kwargs):
+        return self.onboarding('node', **kwargs)
+
+    def container(self, **kwargs):
+        return self.onboarding('container', **kwargs)
+
+    def sd(self):
+        print "todo"
+
+    def onboarding(self, type, **kwargs):
         host = kwargs["host"]
         port = kwargs["port"]
         #protocol = kwargs["protocol"] #TODO to be implemented
@@ -54,6 +91,11 @@ class RegisterHandler(object):
         endpoint = "/metrics"
         protocol = "http"
         job_name = kwargs["job_name"]
+        if type is 'node' or type is 'container':
+            instance_key = None
+        else:
+            instance_key = kwargs["instance_key"]
+
         target = protocol+ "://"+host+":"+port+endpoint
         #Custom labels #TODO to be implemented
 
@@ -66,9 +108,8 @@ class RegisterHandler(object):
             log.info("Agent is reachable")
 
         # Read the prometheus yaml file, parse it and set job_name, target and save the file back
-        base_file = os.path.join(os.path.dirname(template_data.__file__),
-                             "prometheus.yml")
-        yaml_helper.set_target(base_file, job_name, host, port, protocol, endpoint)
+        base_file = CONF.gapi.prometheus_template
+        yaml_helper.set_target(base_file, job_name, host, port, protocol, endpoint, instance_key)
 
         # SCP the updated prometheus file to prometheus host
         log.info("Updating prometheus configuration")
@@ -79,11 +120,9 @@ class RegisterHandler(object):
         sshclient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         sshclient.load_system_host_keys()
         log.info("Aggregator Host: %s", aggregator_host)
-        sshclient.connect(aggregator_host, username="vagrant", password="vagrant")
+        sshclient.connect(aggregator_host, username=CONF.gapi.username, password=CONF.gapi.password)
         scpclient = scp.SCPClient(sshclient.get_transport())
         scpclient.put(base_file, '/etc/prometheus')
-        #log.info(stderr.readlines())
-
 
         # Reload Prometheus configuration
         log.info("Reloading prometheus configuration")
@@ -104,10 +143,3 @@ class RegisterHandler(object):
         json.dumps(onboarding_json, target_file)
 
         return json.dumps(onboarding_json)
-
-
-    def agent(self):
-        print "todo"
-
-    def sd(self):
-        print "todo"
