@@ -36,7 +36,11 @@ API_SERVICE_OPTS = [
                help='The password the prometheus server host'),
     cfg.StrOpt('prometheus_template',
                default='/etc/prometheus/prometheus.yml',
-               help='File location of master prometheus template')
+               help='File location of master prometheus template'),
+    cfg.StrOpt('pkey',
+               help='primary key'),
+    cfg.StrOpt('key_filename',
+               help='key_filename')
 ]
 
 CONF = cfg.CONF
@@ -47,6 +51,8 @@ CONF.register_opts(API_SERVICE_OPTS, opt_group)
 CONF.set_override('username', CONF.gapi.username, opt_group)
 CONF.set_override('password', CONF.gapi.password, opt_group)
 CONF.set_override('prometheus_template', CONF.gapi.prometheus_template, opt_group)
+CONF.set_override('pkey', CONF.gapi.pkey, opt_group)
+CONF.set_override('key_filename', CONF.gapi.key_filename, opt_group)
 
 
 log = logging.getLogger(__name__)
@@ -120,7 +126,8 @@ class RegisterHandler():
         sshclient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         sshclient.load_system_host_keys()
         log.info("Aggregator Host: %s", aggregator_host)
-        sshclient.connect(aggregator_host, username=CONF.gapi.username, password=CONF.gapi.password)
+        # Currently supporting username/password and key_file based authentication. ToDO add pkey parameter support in connect method
+        sshclient.connect(aggregator_host, username=CONF.gapi.username, password=CONF.gapi.password, key_filename=CONF.gapi.key_filename)
         scpclient = scp.SCPClient(sshclient.get_transport())
         scpclient.put(base_file, '/etc/prometheus')
 
