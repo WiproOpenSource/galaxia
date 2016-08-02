@@ -108,7 +108,8 @@ def draw_dashboard(message):
             result = conn.execute(sql_query, params)
 
         except SQLAlchemyError as e:
-            print e.message, e.args
+            log.error(e.message)
+            log.error(e.args)
 
     prom_dash_request_url = client.concatenate_url(
             os.getenv("renderer_endpoint"), message['name'])
