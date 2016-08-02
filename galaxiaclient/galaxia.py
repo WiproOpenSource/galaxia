@@ -40,6 +40,7 @@ Options
 import argparse
 import os
 import sys
+import json
 
 from galaxiaclient.common import cli_utils
 from galaxiaclient.common import client
@@ -246,6 +247,7 @@ class DashboardCommands(cli_utils.BaseParser):
             self.parser.error('add --names-list or (--search-string and --search-type)')
 
         json_data = client.create_request_data(**vars(args))
+        print json_data
         galaxia_api_endpoint = os.getenv("galaxia_api_endpoint")
         target_url = client.concatenate_url(galaxia_api_endpoint, self.url)
         try:
@@ -332,6 +334,61 @@ class StatusCommands(cli_utils.BaseParser):
             #header = ["Container", "Host", "ImageName", "ID"]
             format_print.format_dict(resp.json(), "keys")
 
+
+class LabelCommands(cli_utils.BaseParser):
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    status_uri = "label"
+
+    def list(self):
+        self.parser.add_argument('--unit-type', help='Type of unit valid value\
+                                                     is docker', required=True)
+        self.parser.add_argument('--search-type', help='search type', required=False)
+        self.parser.add_argument('--search-string', help='search string', required=False)
+        self.parser.add_argument('--meter-name', help='Name of the meter', required=True)
+        args = self.parser.parse_args()
+        unit_type = vars(args)['unit_type']
+        search_type = vars(args)['search_type']
+        search_string = vars(args)['search_string']
+        meter_name = vars(args)['meter_name']
+        data = {'unit_type': unit_type, 'search_type': search_type, 'search_string': search_string, 'meter_name': meter_name}
+        galaxia_api_endpoint = os.getenv("galaxia_api_endpoint")
+        target_url = client.concatenate_url(galaxia_api_endpoint,
+                                            self.status_uri)
+        resp = client.http_request('GET', target_url, self.headers, data)
+        format_print.format_dict(resp.json(), "keys")
+
+
+class RegisterCommands(cli_utils.BaseParser):
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    status_uri = "register"
+
+    def agent(self):
+        self.parser.add_argument('--unit-type', help='Type of unit valid value\
+                                                     is docker', required=True)
+        self.parser.add_argument('--host', help='host', required=True)
+        self.parser.add_argument('--port', help='port', required=True)
+        self.parser.add_argument('--instance-key', help='Name of the meter', required=False)
+        self.parser.add_argument('--job-name', help='Name of the meter', required=True)
+        args = self.parser.parse_args()
+        unit_type = vars(args)['unit_type']
+        host = vars(args)['host']
+        port = vars(args)['port']
+        job_name = vars(args)['job_name']
+        instance_key =  vars(args)['instance_key']
+        data = {'unit_type': unit_type, 'host': host, 'port': port, 'job_name': job_name, 'instance_key': instance_key }
+        galaxia_api_endpoint = os.getenv("galaxia_api_endpoint")
+        target_url = client.concatenate_url(galaxia_api_endpoint,
+                                            self.status_uri)
+        resp = client.http_request('POST', target_url, self.headers, json.dumps(data))
+        format_print.format_dict(resp.json(), "keys")
+
+
 def main():
     """
     This is the galaxia client help manual
@@ -385,7 +442,9 @@ def main():
         "metrics": MetricsCommands,
         "exporter": MetricsExporter,
         "catalogue": Catalogue,
-        "status": StatusCommands
+        "status": StatusCommands,
+        "register": RegisterCommands,
+        "label": LabelCommands
     }
 
     options = modules.keys()

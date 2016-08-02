@@ -29,7 +29,7 @@ def create_request_data(**kwargs):
 
     data = {}
     for key, value in kwargs.iteritems():
-        if "list" in key and not (value is None):
+        if "list" in key and not (value is None) and not "metrics_list" in key:
             temp = split_and_convert(key,value)
             data[key]=temp
         else:
