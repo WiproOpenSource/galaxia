@@ -3,7 +3,6 @@
   apt: name={{item}} state=installed force=yes
   with_items:
        - python-pip
-       - pip
 
 - name: Install python module
   pip: name=docker-py
@@ -24,7 +23,7 @@
 
 - name: Install node exporter
   docker:
-     name: cadvisor
+     name: node-exporter
      image: prom/node-exporter
      state: started
      net: host
