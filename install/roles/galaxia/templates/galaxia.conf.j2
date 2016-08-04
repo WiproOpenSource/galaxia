@@ -10,6 +10,11 @@ rabbitmq_host={{ ansible_hostname }}
 log_file={{ ansible_env.HOME}}/gapi.log
 log_level=INFO
 topic_exporter=gexporter
+username=vagrant
+password=vagrant
+pkey=
+key_filename=
+prometheus_template=
 
 [gexporter]
 rabbitmq_port=5672

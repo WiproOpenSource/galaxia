@@ -1,5 +1,5 @@
 ---
-galaxia_root_dir: /opt/galaxia/galaxia
+galaxia_root_dir: /opt/galaxia_src/galaxia
 galaxia_config_dir: /etc/galaxia
 mysql_host: localhost
 

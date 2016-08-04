@@ -27,6 +27,8 @@
   sudo: false
   raw: >
     sudo git clone https://github.com/prometheus/promdash.git {{ promdash_root_dir }};
+    cd {{ promdash_root_dir }};
+    sudo git checkout 1520e3db55c6523cfc42ad633868f8bfecf2d80d;
     sudo chown -Rf ${USER}:${USER} {{ promdash_root_dir }};
 
 - name: Create Promdash database config file

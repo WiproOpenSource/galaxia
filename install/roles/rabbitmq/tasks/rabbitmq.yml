@@ -4,11 +4,7 @@
 - name: Add RabbitMQ's public key
   apt_key: url=http://www.rabbitmq.com/rabbitmq-signing-key-public.asc state=present
 - name: Ensure RabbitMQ is installed
-  apt: pkg=rabbitmq-server state=present update_cache=yes
+  apt: pkg=rabbitmq-server state=present update_cache=yes force=yes
 - name: Ensure RabbitMQ is running
   service: name=rabbitmq-server state=started
-- name: Symlink RabbitMQ bin path to sbin (dumb workaround for rabbitmq_plugin module)
-  shell: ln -s /usr/lib/rabbitmq/bin /usr/lib/rabbitmq/sbin creates=/usr/lib/rabbitmq/sbin
-  notify:
-    - restart rabbitmq-server
 
