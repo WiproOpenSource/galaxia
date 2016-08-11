@@ -358,7 +358,8 @@ class LabelCommands(cli_utils.BaseParser):
         target_url = client.concatenate_url(galaxia_api_endpoint,
                                             self.status_uri)
         resp = client.http_request('GET', target_url, self.headers, data)
-        format_print.format_dict(resp.json(), "keys")
+#        format_print.format_dict(resp.json(), "keys") TODO  We need a better printing done here for nested json
+        print resp.json()
 
 
 class RegisterCommands(cli_utils.BaseParser):
