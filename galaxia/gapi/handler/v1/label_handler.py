@@ -10,7 +10,7 @@ class LabelHandler(object):
 
     def retrieve_labels(self, meter_name):
         labels_list = prometheus_helper.get_labels(meter_name)
-        return json.dumps(labels_list)
+        return labels_list
 
     def get_labels(self, meter_name, unit_type, search_type, search_string):
         #unit_type = kwargs['unit_type']

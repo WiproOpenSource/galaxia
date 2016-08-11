@@ -89,12 +89,11 @@ def get_labels(meter_name, resp):
     for i in result_list:
         label_list=[]
         for key,value in i['metric'].iteritems():
-            if key == "__name__" or key == "instance" or key == "job":
+            if key == "__name__" : #or key == "instance" or key == "job":
                 pass
             else:
-                label_string = '"'+ key +'"' +':'+'"'+value+'"'
-                label_list.append(label_string)
+                label_list.append({key: value})
         json_obj = {'label': label_list}
         labels.append(json_obj)
     json_obj = {'name': meter_name, 'labels': labels}
-    return json_obj
+    return json.dumps(json.dumps(json_obj))
