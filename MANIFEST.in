@@ -1,2 +1,4 @@
 include galaxia/templates/promdash.json
 include galaxia/templates/prometheus.yml
+include galaxia/templates/consul.yml
+

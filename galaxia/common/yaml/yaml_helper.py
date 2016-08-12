@@ -14,12 +14,14 @@
 
 import yaml
 import logging
+import galaxia.templates as template_data
+import os
 
 log = logging.getLogger(__name__)
 
 
 # Method to set target in prometheus.yml file
-def set_target(file, job, host, port, protocol, endpoint, instance_key):
+def set_target(file_name, job, host, port, protocol, endpoint, instance_key):
     job_exist = False
     job_handle = None
     index = 0
@@ -34,7 +36,7 @@ def set_target(file, job, host, port, protocol, endpoint, instance_key):
         relabel_configs.update({'target_label': 'instance_key'})
         relabel_configs.update({'replacement': instance_key})
 
-    with open(file,'a+') as stream:
+    with open(file_name, 'a+') as stream:
         a = yaml.load(stream)
         log.info(a)
         d = {'targets': [target]}
@@ -66,6 +68,47 @@ def set_target(file, job, host, port, protocol, endpoint, instance_key):
                 a['scrape_configs'][index]['relabel_configs'] = [relabel_configs]
         stream.close()
 
-        with open(file, 'w') as outfile:
+        with open(file_name, 'w') as outfile:
+            outfile.write( yaml.dump(a, default_flow_style=False) )
+            outfile.close()
+
+
+# Method to set SD in prometheus yml file
+def set_sd(file_name, job, host, port, protocol, sub_type):
+    sd_template = sub_type+".yml"
+    file_consul_template = os.path.join(os.path.dirname(template_data.__file__), sd_template)
+    with open(file_consul_template) as f:
+        newdct = yaml.load(f)
+    job_exist = False
+    job_handle = None
+    index = 0
+    server = {}
+    target = host+":"+port
+    server.update({'server': target})
+    with open(file_name,'a+') as stream:
+        a = yaml.load(stream)
+
+        for i in a['scrape_configs']:
+            if i['job_name'] == job:
+                job_exist = True
+                job_handle = i
+                index += 1
+                break
+            index += 1
+
+        if job_exist and 'consul_sd_configs' in job_handle.keys():
+            job_handle['consul_sd_configs'].append({'server': target})
+        elif job_exist and not 'consul_sd_configs' in job_handle.keys():
+            job_handle['consul_sd_configs']= server
+            job_handle['relabel_configs']= newdct
+        else:
+            a['scrape_configs'].append({'job_name': job})
+            a['scrape_configs'][index]['scrape_interval'] = "5s"
+            a['scrape_configs'][index]['scrape_timeout'] = "10s"
+            a['scrape_configs'][index]['consul_sd_configs'] = [{'server': target}]
+            a['scrape_configs'][index]['relabel_configs'] = newdct
+        stream.close()
+
+        with open(file_name, 'w') as outfile:
             outfile.write( yaml.dump(a, default_flow_style=False) )
             outfile.close()

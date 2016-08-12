@@ -1,0 +1,40 @@
+#__meta_consul_address: the address of the target
+#__meta_consul_node: the node name defined for the target
+#__meta_consul_tags: the list of tags of the target joined by the tag separator
+#__meta_consul_service: the name of the service the target belongs to
+#__meta_consul_service_address: the service address of the target
+#__meta_consul_service_port: the service port of the target
+#__meta_consul_service_id: the service ID of the target
+#__meta_consul_dc: the datacenter name for the target
+      - source_labels: ['__meta_consul_address']
+        regex: '(.*)'
+        target_label: consul_target_address
+        replacement: $1
+      - source_labels: ['__meta_consul_tags']
+        regex: ',(.*),'
+        target_label: consul_service_tags
+        replacement: $1
+      - source_labels: ['__meta_consul_service']
+        regex: '(.*)'
+        target_label: consul_service_name
+        replacement: $1
+      - source_labels: ['__meta_consul_service_id']
+        regex: '([^:]+)'
+        target_label: consul_service_id
+        replacement: $1
+      - source_labels: ['__meta_consul_node']
+        regex: '(.*)'
+        target_label: consul_node_name_target
+        replacement: $1
+      - source_labels: ['__meta_consul_service_address']
+        regex: '(.*)'
+        target_label: consul_service_address_target
+        replacement: $1
+      - source_labels: ['__meta_consul_service_port']
+        regex: '(.*)'
+        target_label: consul_service_port_target
+        replacement: $1
+      - source_labels: ['__meta_consul_dc']
+        regex: '(.*)'
+        target_label: dc_name_target
+        replacement: $1

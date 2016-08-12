@@ -86,38 +86,18 @@ class RegisterHandler():
     def container(self, **kwargs):
         return self.onboarding('container', **kwargs)
 
-    def sd(self):
-        print "todo"
+    def sd(self, **kwargs):
+        return self.onboarding('sd', **kwargs)
 
-    def onboarding(self, type, **kwargs):
-        host = kwargs["host"]
-        port = kwargs["port"]
-        #protocol = kwargs["protocol"] #TODO to be implemented
-        #endpoint = kwargs["endpoint"]  #TODO to be implemented
-        endpoint = "/metrics"
-        protocol = "http"
-        job_name = kwargs["job_name"]
-        if type is 'node' or type is 'container':
-            instance_key = None
-        else:
-            instance_key = kwargs["instance_key"]
-
-        target = protocol+ "://"+host+":"+port+endpoint
-        #Custom labels #TODO to be implemented
-
-        # checkConnectivity with target host & port
+    def check_connectivity(self, target):
         resp = client.http_request("GET", target, headers, None, None, None)
         if resp.status_code!=200:
             log.error("Unable to reach the request resource @ %s" % target)
-            return "Unable to reach the agent on target machine @ %s host and %s port" %[host, port]
+            return  "failure"
         else:
             log.info("Agent is reachable")
 
-        # Read the prometheus yaml file, parse it and set job_name, target and save the file back
-        base_file = CONF.gapi.prometheus_template
-        yaml_helper.set_target(base_file, job_name, host, port, protocol, endpoint, instance_key)
-
-        # SCP the updated prometheus file to prometheus host
+    def update_prometheus_config(self, base_file):
         log.info("Updating prometheus configuration")
         aggregator_host_port = os.getenv('aggregator_endpoint').split('/')[2]
         aggregator_host = aggregator_host_port.split(':')[0]
@@ -131,22 +111,49 @@ class RegisterHandler():
         scpclient = scp.SCPClient(sshclient.get_transport())
         scpclient.put(base_file, '/etc/prometheus')
 
+
+    def onboarding(self, type, **kwargs):
+        host = kwargs["host"]
+        port = kwargs["port"]
+        #protocol = kwargs["protocol"] #TODO to be implemented
+        #endpoint = kwargs["endpoint"]  #TODO to be implemented
+        endpoint = "/metrics"
+        protocol = "http"
+        job_name = kwargs["job_name"]
+        if type is 'node' or type is 'container':
+            instance_key = None
+        elif type is 'app':
+            instance_key = kwargs["instance_key"]
+
+        if type is 'node' or type is 'container' or type is 'app':
+            target = target = protocol+ "://"+host+":"+port+endpoint
+        else:
+            target = protocol+ "://"+host+":"+port
+
+        # Custom labels #TODO to be implemented
+
+        # checkConnectivity with target host & port
+        status = self.check_connectivity(target)
+        if status is 'failure':
+            return "Unable to reach the agent on target machine @ %s" %target
+
+        # Read the prometheus yaml file, parse it and set job_name, target and save the file back
+        base_file = CONF.gapi.prometheus_template
+        if type is 'node' or type is 'container' or type is 'app':
+            yaml_helper.set_target(base_file, job_name, host, port, protocol, endpoint, instance_key)
+        elif type is 'sd':
+            sub_type = kwargs['sub_type']
+            yaml_helper.set_sd(base_file, job_name, host, port, protocol, sub_type)
+
+        # SCP the updated prometheus file to prometheus host
+        self.update_prometheus_config(base_file)
+
         # Reload Prometheus configuration
+        aggregator_host_port = os.getenv('aggregator_endpoint').split('/')[2]
         log.info("Reloading prometheus configuration")
         resp = prometheus_helper.reload_prometheus_config(aggregator_host_port)
         if not resp:
             log.info("Failed to reload prometheus configuration")
             return "Failed to register app"
-        #log.info("Prometheus reloading response:  %s", resp.text)
 
-        onboarding_json = metrics_parser.main(target)
-        target_directory = os.path.join(expanduser("~"),"galaxia",job_name,host,port)
-        if not os.path.exists(target_directory):
-             os.makedirs(target_directory)
-
-        log.info("Onboarding json: %s", onboarding_json)
-
-        target_file = os.path.join(target_directory,"onboarding_json.json")
-        json.dumps(onboarding_json, target_file)
-
-        return json.dumps(onboarding_json)
+        return
