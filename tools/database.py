@@ -59,8 +59,8 @@ def main():
 
     print "Creating Metrics Table in galaxia database"
     conn.execute("CREATE TABLE METRICS(METRICS_NAME VARCHAR(50),\
-                 PROMETHEUS_NAME VARCHAR(100), DESCRIPTION VARCHAR(200),\
-                 TYPE VARCHAR(20))")
+                 METRICS_UNIT_TYPE VARCHAR(20), METRICS_UNIT_SUBTYPE VARCHAR(20), METRICS_HELP VARCHAR(200),\
+                 METRICS_TYPE VARCHAR(20))")
 
     print "Creating OPENSTACK_TOKEN Table in galaxia database"
     conn.execute("CREATE TABLE OPENSTACK_TOKEN(ID VARCHAR(5), TOKEN VARCHAR(50)\
