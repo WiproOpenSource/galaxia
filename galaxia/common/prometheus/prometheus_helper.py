@@ -51,6 +51,8 @@ def get_metrics(expression):
         resp = client.http_request("GET", prom_request_url, headers, payload,
                                    None, None)
         names_list, metrics_list, _, _, _ = response_parser.get_names_list(resp.text)
+        log.info("names_list %s", names_list)
+        log.info("metrics_list %s", metrics_list)
         return names_list, metrics_list
 
 

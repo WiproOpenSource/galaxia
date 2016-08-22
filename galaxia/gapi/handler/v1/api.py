@@ -206,9 +206,13 @@ class ApiHandler():
         return json.dumps(dict(result.fetchall()))
 
     def get_sample(self, **kwargs):# metrics_json, search_string, search_type, type):
+        search_string = None
+        search_type = None
+        if 'search_string' in kwargs and 'search_type' in kwargs:
+            search_string = kwargs['search_string']
+            search_type = kwargs['search_type']
+
         meter_name = kwargs['meter_name']
-        search_string = kwargs['search_string']
-        search_type = kwargs['search_type']
         type = kwargs['type']
 
         if search_string is None or search_type is None:
@@ -217,6 +221,8 @@ class ApiHandler():
             expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), search_type, search_string)
             #expr = meter_name+"{"+search_type+"=~"+'"' +\
              #   search_string+'"'+"}"
+
+        log.info("Expression %s", expr)
 
         if type == 'container':
             names_list, metrics_list = prometheus_helper.get_metrics(expr)
