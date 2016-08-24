@@ -73,9 +73,10 @@ class MetricsController(object):
     @expose(generic=True)
     def index(self):
         log.info("Received request to List Metrics")
-        unit_type = request.GET.get('type')
+        unit_type = request.GET.get('unit_type')
+        sub_type = request.GET.get('sub_type')
         handler = api_handler.ApiHandler()
-        resp = handler.get_metrics(unit_type)
+        resp = handler.get_metrics(unit_type, sub_type)
         return resp
 
     @index.when(method='POST', template='json')

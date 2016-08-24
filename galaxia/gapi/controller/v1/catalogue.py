@@ -27,6 +27,7 @@ class CatalogueController(object):
         unit_type = request.GET.get('unit_type')
         search_string = request.GET.get('search_string')
         search_type = request.GET.get('search_type')
+        sub_type = request.GET.get('sub_type')
         handler = catalogue_handler.CatalogueHandler()
-        unit_list = handler.get_units(unit_type, search_string, search_type)
+        unit_list = handler.get_units(unit_type, search_string, search_type, sub_type)
         return unit_list

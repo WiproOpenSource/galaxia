@@ -182,18 +182,19 @@ class ApiHandler():
         return "Dashboard creation request has been accepted and the new\
                dashboard will be available @ %s" % d_url
 
-    def get_metrics(self, query_type):
+    def get_metrics(self, unit_type, sub_type):
         """
         Handler to get supported metrics for a unit_type
-        :param query_type:
+        :param unit_type:
+        :param sub_type
         :return:
         """
 
-        log.info("Request received to get supported metrics for type %s"
-                 % query_type)
+        log.info("Request received to get supported metrics for type %s and subtype %s"
+                 % {unit_type, sub_type} )
         conn = sql_helper.engine.connect()
         sql_query = query_list.GET_METRICS
-        params = query_type,
+        params = sub_type
         try:
             result = conn.execute(sql_query, params)
         except SQLAlchemyError as ex:
@@ -201,11 +202,11 @@ class ApiHandler():
                    exception"
 
         log.info("Request to get supported metrics for %s successfully\
-                 processed" % query_type)
+                 processed" % sub_type)
 
         return json.dumps(dict(result.fetchall()))
 
-    def get_sample(self, **kwargs):# metrics_json, search_string, search_type, type):
+    def get_sample(self, **kwargs):
         search_string = None
         search_type = None
         if 'search_string' in kwargs and 'search_type' in kwargs:
@@ -219,8 +220,6 @@ class ApiHandler():
             expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), None, None)
         else:
             expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), search_type, search_string)
-            #expr = meter_name+"{"+search_type+"=~"+'"' +\
-             #   search_string+'"'+"}"
 
         log.info("Expression %s", expr)
 

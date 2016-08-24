@@ -111,7 +111,6 @@ class RegisterHandler():
         scpclient = scp.SCPClient(sshclient.get_transport())
         scpclient.put(base_file, '/etc/prometheus')
 
-
     def onboarding(self, type, **kwargs):
         host = kwargs["host"]
         port = kwargs["port"]
