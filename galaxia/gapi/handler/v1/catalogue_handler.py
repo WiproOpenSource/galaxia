@@ -15,21 +15,49 @@
 Handler for listing containers, nodes, dashboards, directories,
 exporters
 """
+
 from galaxia.common.prometheus import prometheus_helper
 import json
 from galaxia.gdata.common import query_list
 from galaxia.gdata.common import sql_helper
 from sqlalchemy.exc import SQLAlchemyError
 import logging
+from oslo_config import cfg
 
+
+# Register options for the api service
+CATALOGUE_SERVICE_OPTS = [
+    cfg.StrOpt('node',
+               default='node_uname_info'
+               ),
+    cfg.StrOpt('docker',
+               default='container_last_seen'
+               ),
+    cfg.StrOpt('tomcat',
+               default='catalina_threadpool_maxthreads{name=~"ajp"}'
+               ),
+    cfg.StrOpt('cassandra',
+               default='java_lang_garbagecollector_lastgcinfo_memoryusagebeforegc_max{name="ParNew",key="Par Survivor Space",}'
+               )
+]
+
+CONF = cfg.CONF
+opt_group = cfg.OptGroup(name='catalogue', title='Options for the catalogue service')
+CONF.register_group(opt_group)
+CONF.register_opts(CATALOGUE_SERVICE_OPTS, opt_group)
+
+CONF.set_override('node', CONF.catalogue.node, opt_group)
+CONF.set_override('docker', CONF.catalogue.docker, opt_group)
+CONF.set_override('tomcat', CONF.catalogue.tomcat, opt_group)
+CONF.set_override('cassandra', CONF.catalogue.cassandra, opt_group)
 log = logging.getLogger(__name__)
 
 
 class CatalogueHandler(object):
 
-    def get_units(self, unit_type, search_string, search_type):
+    def get_units(self, unit_type, search_string, search_type, subtype):
         if unit_type in self._function:
-            return self._function[unit_type](search_string,search_type)
+            return self._function[unit_type](search_string,search_type, subtype)
 
     @property
     def _function(self):
@@ -38,13 +66,13 @@ class CatalogueHandler(object):
                     if not attr.startswith('_') and callable(getattr(self, attr
                                                                      )))
 
-    def container(self, search_string, search_type):
+    def container(self, search_string, search_type, subtype):
         list1 = ["Name", "Host", "Image", "Id"]
         i=0
         names_list, hosts_list, image_list, id_list = prometheus_helper.get_containers_by_hostname(search_string,search_type)
         return json.dumps([{list1[i]: value for i, value in enumerate(x, i)} for x in zip(names_list,hosts_list,image_list,id_list)])
 
-    def dashboard(self, search_string, search_type):
+    def dashboard(self, search_string, search_type, subtype):
         sql_query = query_list.LIST_DASHBOARD
         conn = sql_helper.engine.connect()
         try:
@@ -79,7 +107,7 @@ class CatalogueHandler(object):
 
        # return json.dumps(dict(result.fetchall()))
 
-    def exporter(self, search_string, search_type):
+    def exporter(self, search_string, search_type, subtype):
         sql_query = query_list.LIST_EXPORTER
         conn = sql_helper.engine.connect()
         try:
@@ -89,7 +117,13 @@ class CatalogueHandler(object):
 
         return json.dumps(dict(result.fetchall()))
 
-    def node(self, search_string, search_type):
+    def node(self, search_string, search_type, subtype):
         names_list, nodename_list = prometheus_helper.get_names_list(search_string, search_type)
         dictionary = dict(zip(names_list, nodename_list))
         return json.dumps(dictionary)
+
+    def app(self, search_string, search_type, subtype):
+        if subtype is "tomcat":
+            return prometheus_helper.get_apps(CONF.catalogue.tomcat, search_type, search_string,'name')
+        elif subtype is "cassandra":
+            return prometheus_helper.get_apps(CONF.catalogue.cassandra, search_type, search_string,'name','key')
