@@ -2,10 +2,10 @@
 GALAXIA
 =======
 
-Universal Monitoring System
+Universal Monitoring Framework
 --------------------------------
 
-Galaxia is envisioned as a dynamic monitoring system with the following goals
+Galaxia is envisioned as a dynamic monitoring framework with the following goals
 
 - One single repository for all the monitoring metrics
 - On demand dynamic generation of monitoring dashboard
