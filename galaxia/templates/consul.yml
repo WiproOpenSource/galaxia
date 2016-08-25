@@ -19,7 +19,7 @@
         target_label: consul_service_name
         replacement: $1
       - source_labels: ['__meta_consul_service_id']
-        regex: '([^:]+)'
+        regex: '(.*)'
         target_label: consul_service_id
         replacement: $1
       - source_labels: ['__meta_consul_node']
@@ -37,4 +37,8 @@
       - source_labels: ['__meta_consul_dc']
         regex: '(.*)'
         target_label: dc_name_target
+        replacement: $1
+      - source_labels: ['__meta_consul_service_id']
+        regex: '(.*)'
+        target_label: instance_key
         replacement: $1
