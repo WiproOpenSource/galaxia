@@ -54,4 +54,4 @@ password=root
 node=node_uname_info
 docker=container_last_seen
 tomcat=catalina_threadpool_maxthreads{name=~"ajp"}
-cassandra=java_lang_garbagecollector_lastgcinfo_memoryusagebeforegc_max{name="ParNew",key="Par Survivor Space",}
+cassandra=org_apache_cassandra_metrics_table_value{keyspace="system",scope="hints",name="KeyCacheHitRate"}
