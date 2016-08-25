@@ -17,6 +17,7 @@ Prometheus response parser
 """
 import json
 
+
 def get_names_list(resp):
     names_list = []
     metrics_list = []
@@ -66,6 +67,7 @@ def get_names_with_status_list(resp, threshold_time):
 
     return names_list, status_list
 
+
 def get_jmx_names_list(resp):
     instance_list = []
     job_list = []
@@ -97,3 +99,35 @@ def get_labels(meter_name, resp):
         labels.append(json_obj)
     json_obj = {'name': meter_name, 'labels': labels}
     return json.dumps(json.dumps(json_obj))
+
+
+def get_app_list(resp, *argv):
+    temp=[]
+    result_list = json.loads(resp)['data']['result']
+    for i in result_list:
+        del i['value']
+        del i['metric']['__name__']
+        for j in argv:
+            if j in i['metric'].keys():
+                del i['metric'][j]
+        temp.append(i['metric'])
+
+    return json.dumps(temp)
+
+
+def get_metrics(resp, unit_type):
+    instance_value_list = []
+    result_list = json.loads(resp)['data']['result']
+    for i in result_list:
+        if unit_type is 'container':
+            if 'name' in i['metric'].keys():
+                instance_key = i['metric'].get('name')
+        else:
+            instance_key = i['metric'].get('instance_key')
+        value = i['value'][1]
+        time = i['value'][0]
+        instance_value = {"instance_key": instance_key, "value": value, "time": time}
+        instance_value_list.append(instance_value)
+
+    return instance_value_list
+

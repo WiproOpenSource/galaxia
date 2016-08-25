@@ -123,7 +123,7 @@ class CatalogueHandler(object):
         return json.dumps(dictionary)
 
     def app(self, search_string, search_type, subtype):
-        if subtype is "tomcat":
+        if subtype == "tomcat":
             return prometheus_helper.get_apps(CONF.catalogue.tomcat, search_type, search_string,'name')
-        elif subtype is "cassandra":
+        elif subtype == "cassandra":
             return prometheus_helper.get_apps(CONF.catalogue.cassandra, search_type, search_string,'name','key')

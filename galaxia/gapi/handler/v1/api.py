@@ -214,7 +214,7 @@ class ApiHandler():
             search_type = kwargs['search_type']
 
         meter_name = kwargs['meter_name']
-        type = kwargs['type']
+        unit_type = kwargs['unit_type']
 
         if search_string is None or search_type is None:
             expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), None, None)
@@ -222,11 +222,10 @@ class ApiHandler():
             expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), search_type, search_string)
 
         log.info("Expression %s", expr)
+        instance_value_list = prometheus_helper.get_metrics(expr, unit_type)
+        kwargs['result_list'] = instance_value_list
+        return json.dumps(kwargs)
 
-        if type == 'container':
-            names_list, metrics_list = prometheus_helper.get_metrics(expr)
-            dictionary = dict(zip(names_list, metrics_list))
-            return json.dumps(dictionary)
 
     def create_metrics_exporter(self, **kwargs):
         """

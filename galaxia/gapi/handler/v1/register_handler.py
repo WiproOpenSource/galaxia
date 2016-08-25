@@ -119,10 +119,8 @@ class RegisterHandler():
         endpoint = "/metrics"
         protocol = "http"
         job_name = kwargs["job_name"]
-        if type is 'node' or type is 'container':
-            instance_key = None
-        elif type is 'app':
-            instance_key = kwargs["instance_key"]
+        if type is 'node' or type is 'container' or type is 'app':
+            instance_key= kwargs["instance_key"]
 
         if type is 'node' or type is 'container' or type is 'app':
             target = target = protocol+ "://"+host+":"+port+endpoint

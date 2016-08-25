@@ -29,5 +29,6 @@ class CatalogueController(object):
         search_type = request.GET.get('search_type')
         sub_type = request.GET.get('sub_type')
         handler = catalogue_handler.CatalogueHandler()
+        log.info("Received request to get all %s", unit_type)
         unit_list = handler.get_units(unit_type, search_string, search_type, sub_type)
         return unit_list
