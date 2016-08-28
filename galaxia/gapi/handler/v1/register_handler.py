@@ -147,10 +147,10 @@ class RegisterHandler():
 
         # Reload Prometheus configuration
         aggregator_host_port = os.getenv('aggregator_endpoint').split('/')[2]
-        log.info("Reloading prometheus configuration")
+        log.info("Reloading prometheus configuration for prometheus at %s", aggregator_host_port)
         resp = prometheus_helper.reload_prometheus_config(aggregator_host_port)
         if not resp:
             log.info("Failed to reload prometheus configuration")
             return "Failed to register app"
 
-        return
+        return resp

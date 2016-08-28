@@ -24,6 +24,7 @@ log = logging.getLogger(__name__)
 def set_target(file_name, job, host, port, protocol, endpoint, instance_key):
     job_exist = False
     job_handle = None
+    source_labels_value = ['__address__']
     index = 0
     relabel_configs = {}
     target = host + ":" + port
@@ -31,7 +32,7 @@ def set_target(file_name, job, host, port, protocol, endpoint, instance_key):
     log.info("Target: %s", target)
 
     if instance_key is not None:
-        relabel_configs.update({'source_labels': '[__address__]'})
+        relabel_configs.update({'source_labels': source_labels_value})
         relabel_configs.update({'regex': target})
         relabel_configs.update({'target_label': 'instance_key'})
         relabel_configs.update({'replacement': instance_key})
@@ -46,10 +47,11 @@ def set_target(file_name, job, host, port, protocol, endpoint, instance_key):
                 job_exist = True
                 job_handle = i
 
-            j = i['target_groups']
-            for k in j:
-                if target == k['targets']:
-                    return "Target already exists"
+            if 'target_groups' in i.keys():
+                j = i['target_groups']
+                for k in j:
+                    if 'targets' in k.keys() and target == k['targets']:
+                        return "Target already exists"
             index += 1
 
         if job_exist:
