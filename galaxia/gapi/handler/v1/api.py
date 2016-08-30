@@ -190,8 +190,7 @@ class ApiHandler():
         :return:
         """
 
-        log.info("Request received to get supported metrics for type %s and subtype %s"
-                 % {unit_type, sub_type} )
+        log.info("Request received to get supported metrics for unit_type %s and subtype %s" %(unit_type, sub_type) )
         conn = sql_helper.engine.connect()
         sql_query = query_list.GET_METRICS
         params = sub_type
@@ -216,7 +215,7 @@ class ApiHandler():
         meter_name = kwargs['meter_name']
         unit_type = kwargs['unit_type']
 
-        if search_string is None or search_type is None:
+        if   search_string is None or search_type is None:
             expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), None, None)
         else:
             expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), search_type, search_string)
@@ -224,7 +223,7 @@ class ApiHandler():
         log.info("Expression %s", expr)
         instance_value_list = prometheus_helper.get_metrics(expr, unit_type)
         kwargs['result_list'] = instance_value_list
-        return json.dumps(kwargs)
+        return kwargs
 
 
     def create_metrics_exporter(self, **kwargs):

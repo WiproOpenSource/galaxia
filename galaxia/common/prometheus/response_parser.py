@@ -98,7 +98,7 @@ def get_labels(meter_name, resp):
         json_obj = {'label': label_list}
         labels.append(json_obj)
     json_obj = {'name': meter_name, 'labels': labels}
-    return json.dumps(json.dumps(json_obj))
+    return json.dumps(json_obj)
 
 
 def get_app_list(resp, *argv):
