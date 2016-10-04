@@ -59,7 +59,7 @@ def main():
 
     print "Creating Metrics Table in galaxia database"
     conn.execute("CREATE TABLE METRICS(METRICS_NAME VARCHAR(50),\
-                 METRICS_UNIT_TYPE VARCHAR(20), METRICS_UNIT_SUBTYPE VARCHAR(20), METRICS_HELP VARCHAR(200),\
+                 METRICS_UNIT_TYPE VARCHAR(20), METRICS_UNIT_SUBTYPE VARCHAR(20), METRICS_HELP VARCHAR(800),\
                  METRICS_TYPE VARCHAR(20))")
 
     print "Creating OPENSTACK_TOKEN Table in galaxia database"
