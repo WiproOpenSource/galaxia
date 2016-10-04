@@ -17,6 +17,7 @@
 from galaxia.gapi import config as gapi_config
 from oslo_config import cfg
 import pecan
+from eventlet.corolocal import local
 
 import sys
 
@@ -53,6 +54,7 @@ def setup_app(config=None):
         app_conf.pop('root'),
         force_canonical=False,
         logging=getattr(config, 'logging', {}),
+        context_local_factory=local,
         **app_conf
     )
     return app
