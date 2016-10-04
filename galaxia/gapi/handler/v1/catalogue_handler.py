@@ -30,14 +30,44 @@ CATALOGUE_SERVICE_OPTS = [
     cfg.StrOpt('node',
                default='node_uname_info'
                ),
+    cfg.StrOpt('node_remove',
+               default=''
+               ),
     cfg.StrOpt('docker',
                default='container_last_seen'
+               ),
+    cfg.StrOpt('docker_remove',
+               default=''
                ),
     cfg.StrOpt('tomcat',
                default='catalina_threadpool_maxthreads{name=~"ajp"}'
                ),
+    cfg.StrOpt('tomcat_remove',
+               default='name'
+               ),
     cfg.StrOpt('cassandra',
                default='java_lang_garbagecollector_lastgcinfo_memoryusagebeforegc_max{name="ParNew",key="Par Survivor Space",}'
+               ),
+     cfg.StrOpt('cassandra_remove',
+               default='name,key'
+               ),
+    cfg.StrOpt('mongodb',
+               default='mongodb_connections{state="available"}'
+               ),
+    cfg.StrOpt('mongodb_remove',
+               default='state'
+               ),
+    cfg.StrOpt('mysql',
+               default='mysql_up'
+               ),
+    cfg.StrOpt('mysql_remove',
+               default=''
+               ),
+    cfg.StrOpt('postgres',
+               default='pg_exporter_scrapes_total'
+               ),
+    cfg.StrOpt('postgres_remove',
+               default=''
                )
 ]
 
@@ -47,9 +77,19 @@ CONF.register_group(opt_group)
 CONF.register_opts(CATALOGUE_SERVICE_OPTS, opt_group)
 
 CONF.set_override('node', CONF.catalogue.node, opt_group)
+CONF.set_override('node_remove', CONF.catalogue.node_remove, opt_group)
 CONF.set_override('docker', CONF.catalogue.docker, opt_group)
+CONF.set_override('docker_remove', CONF.catalogue.docker_remove, opt_group)
 CONF.set_override('tomcat', CONF.catalogue.tomcat, opt_group)
+CONF.set_override('tomcat_remove', CONF.catalogue.tomcat_remove, opt_group)
 CONF.set_override('cassandra', CONF.catalogue.cassandra, opt_group)
+CONF.set_override('cassandra_remove', CONF.catalogue.cassandra_remove, opt_group)
+CONF.set_override('mongodb', CONF.catalogue.mongodb, opt_group)
+CONF.set_override('mongodb_remove', CONF.catalogue.mongodb_remove, opt_group)
+CONF.set_override('mysql', CONF.catalogue.mysql, opt_group )
+CONF.set_override('mysql_remove', CONF.catalogue.mysql_remove, opt_group )
+CONF.set_override('postgres', CONF.catalogue.postgres, opt_group )
+CONF.set_override('postgres_remove', CONF.catalogue.postgres_remove, opt_group )
 log = logging.getLogger(__name__)
 
 
@@ -124,6 +164,12 @@ class CatalogueHandler(object):
 
     def app(self, search_string, search_type, subtype):
         if subtype == "tomcat":
-            return prometheus_helper.get_apps(CONF.catalogue.tomcat, search_type, search_string,'name')
+            return prometheus_helper.get_apps(CONF.catalogue.tomcat, search_type, search_string,tuple(CONF.catalogue.tomcat_remove.split(',')))
         elif subtype == "cassandra":
-            return prometheus_helper.get_apps(CONF.catalogue.cassandra, search_type, search_string,'name','key')
+            return prometheus_helper.get_apps(CONF.catalogue.cassandra, search_type, search_string,tuple(CONF.catalogue.cassandra_remove.split(',')))
+        elif subtype == 'mongodb':
+            return prometheus_helper.get_apps(CONF.catalogue.mongodb, search_type, search_string,tuple(CONF.catalogue.mongodb_remove.split(',')))
+        elif subtype == 'mysql':
+            return prometheus_helper.get_apps(CONF.catalogue.mysql, search_type, search_string,tuple(CONF.catalogue.mysql_remove.split(',')))
+        elif subtype == 'postgres':
+            return prometheus_helper.get_apps(CONF.catalogue.postgres, search_type, search_string, tuple(CONF.catalogue.postgres_remove.split(',')))

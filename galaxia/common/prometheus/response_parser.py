@@ -101,7 +101,7 @@ def get_labels(meter_name, resp):
     return json.dumps(json_obj)
 
 
-def get_app_list(resp, *argv):
+def get_app_list(resp, argv):
     temp=[]
     result_list = json.loads(resp)['data']['result']
     for i in result_list:
