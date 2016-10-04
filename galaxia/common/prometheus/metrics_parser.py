@@ -16,7 +16,6 @@ from __future__ import unicode_literals
 import sys
 import json
 from galaxia.gmiddleware.handler import client
-
 try:
     import StringIO
 except ImportError:
@@ -24,7 +23,8 @@ except ImportError:
     import io as StringIO
 
 headers = {
-        "Accept": "application/json"
+        "Accept": "text/html",
+        "Accept-Charset": "utf-8"
     }
 
 class Metric(object):
@@ -238,7 +238,7 @@ def main(target):
     dict2 = []
     i = 0
     resp = client.http_request("GET", target, headers, None, None, None)
-    content = resp.iter_lines()
+    content = resp.iter_lines(decode_unicode=True)
     for lines in content:
         if "HELP" in lines:
             if bool(dict1):
