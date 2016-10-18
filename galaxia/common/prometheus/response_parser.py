@@ -107,6 +107,7 @@ def get_app_list(resp, argv):
     for i in result_list:
         del i['value']
         del i['metric']['__name__']
+        i['metric']['instance']=i['metric']['instance'].split(':')[0]
         for j in argv:
             if j in i['metric'].keys():
                 del i['metric'][j]

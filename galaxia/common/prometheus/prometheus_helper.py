@@ -138,11 +138,22 @@ def get_labels(meter_name):
 def get_apps(meter_name, search_type, search_string, *argv):
     prom_request_url = client.concatenate_url(
         os.getenv("aggregator_endpoint"), query_url)
+    if search_type is not None and search_string is not None:
+        if '{' in meter_name and '}' in meter_name:
+            labels=meter_name.split('{')[1].split('}')[0]
+            labels = labels + ',' +search_type+"=~"+'"' +\
+                search_string+'"'
+            meter_name_final = meter_name.split('{')[0]+'{'+labels+'}'
+        else:
+            labels = search_type+"=~"+'"'+search_string+'"'
+            meter_name_final = meter_name+'{'+labels+'}'
+    else:
+        meter_name_final=meter_name
+
     current_time = str(datetime.datetime.now().isoformat())+"Z"
-    payload = {"query": meter_name, "time": current_time}
+    payload = {"query": meter_name_final, "time": current_time}
     resp = client.http_request("GET", prom_request_url, headers, payload,
                                    None, None)
     app_list = response_parser.get_app_list(resp.text, *argv)
     log.info("app list %s", app_list)
     return app_list
-
