@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Pecan App definition for eventlet based wsgi server"""
+"""Pecan App definition for uwsgi"""
 
 from galaxia.gapi import config as gapi_config
 from oslo_config import cfg
 import pecan
-from eventlet.corolocal import local
-
+from galaxia.common import service
 import sys
 
 # Register options for the api service
@@ -44,7 +43,7 @@ def get_pecan_config():
 
 
 def setup_app(config=None):
-
+    service.prepare_service("gapi", sys.argv)
     if not config:
         config = get_pecan_config()
 
@@ -54,7 +53,6 @@ def setup_app(config=None):
         app_conf.pop('root'),
         force_canonical=False,
         logging=getattr(config, 'logging', {}),
-        context_local_factory=local,
         **app_conf
     )
     return app

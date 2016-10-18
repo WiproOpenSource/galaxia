@@ -23,6 +23,7 @@ import os
 from oslo_config import cfg
 import sys
 
+eventlet.monkey_patch(socket=True, select=True, time=True)
 from galaxia.common import service
 from galaxia.gapi import api
 
@@ -30,7 +31,6 @@ log = logging.getLogger(__name__)
 
 
 def main():
-    eventlet.monkey_patch(socket=True, select=True, time=True)
     service.prepare_service("gapi", sys.argv)
     log.info('Completed configuration file parsing...')
     log.info('Completed logger initialization...')
