@@ -373,7 +373,9 @@ Galaxia comes up with following services gapi, grenderer and gexporter. Let us s
 To test gexporter service you will need to setup OpenStack
 
 
-Run the following commands to start gapi service
+Run the following commands to start gapi service. The gapi service can be started in on of the two ways.
+
+- Development Mode
 
     ```
      source openrc_example
@@ -381,6 +383,15 @@ Run the following commands to start gapi service
 
     ```
 
+- Production Mode - This would require to install uwsgi which on ubuntu can be installed using 
+  "sudo pip install uwsgi". Change to galaxia source directory and Start gapi as follows:
+   
+   ```
+     source openrc_example
+     uwsgi --http-socket :8050 --pecan galaxia/gapi/config.py --master --processes 4 --threads 4 &
+   
+   ```
+   No of threads and processes can be configured as per your underlying hardware.
 
 Run the following commands to start grenderer service
 
