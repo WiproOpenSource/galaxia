@@ -90,8 +90,10 @@ from various systems. Some of the pain points today organization face:
 
 ### Galaxia UI Solution
 -----------------------
-Galaxia comes with 2 UI solution.
-- One which is [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui) 
+Currently [galaxia](https://github.com/WiproOpenSourcePractice/galaxia) has integration with following 2 UI projects:
+
+- One which is [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui). This project consumes the api's exposed by
+[galaxia](https://github.com/WiproOpenSourcePractice/galaxia) and is
 being developed as another project side-by-side of galaxia. Below are the screenshots from [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui)
 
 **Dynamically Fetch Hosts Being Monitored**<br/>
@@ -111,8 +113,9 @@ being developed as another project side-by-side of galaxia. Below are the screen
 <br/>
 
 - Secondly with [Promdash UI](https://github.com/prometheus/promdash)
-Promdash has deprecated as per the prometheus community and hence we recommend using galaxia-ui project. Below are
-some of the screenshots from promdash
+Promdash has deprecated as per the prometheus community and hence we recommend using galaxia-ui project. Promdash find integration with
+galaxia via the galaxia renderer service
+Below are some of the screenshots from promdash
 **Home Page of Promdash with Ecommerece Dashboard**<br/>
 ![Home Page of Promdash with Ecommerece Dashboard](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/prom_screenshot1.png "Home Page of Promdash with Ecommerece Dashboard")
 <br/>
