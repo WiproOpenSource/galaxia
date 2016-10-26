@@ -88,15 +88,22 @@ from various systems. Some of the pain points today organization face:
 - Capability to segregate dashboards as per user profile
 - Co-relation between metrics and associated drilled down capabilities
 
-### Galaxia Screenshots
+### Galaxia UI Solution
 -----------------------
-By default galaxia comes with promdash as the dashboard provider. Below are the screenshots from [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui)
-. This is a gui client which consumes galaxia api.
-![Containers](/doc/1.png?raw=true "Containers")
-![Containers](/doc/2.png?raw=true "Containers")
-![Containers](/doc/3.png?raw=true "Containers")
-![Containers](/doc/4.png?raw=true "Containers")
-![Containers](/doc/5.png?raw=true "Containers")
+Galaxia comes with 2 UI solution.
+- One which is [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui) 
+being developed as another project side-by-side of galaxia. Below are the screenshots from [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui)
+
+![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot1.png)
+![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot2.png)
+![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot3.png)
+![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot4.png)
+![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot5.png)
+
+- Secondly with [Promdash UI](https://github.com/prometheus/promdash)
+Promdash has deprecated as per the prometheus community and hence we recommend using galaxia-ui project. Below are
+some of the screenshots from promdash
+
 
 ### How Galaxia works?
 ------------------
