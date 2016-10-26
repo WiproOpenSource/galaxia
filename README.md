@@ -94,11 +94,11 @@ Galaxia comes with 2 UI solution.
 - One which is [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui) 
 being developed as another project side-by-side of galaxia. Below are the screenshots from [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui)
 
-![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot1.png "Dynamically Fetch Hosts Being Monitored")
-![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot2.png "Dynamically List Containers Being Monitored")
-![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot3.png "Plot a graph for container metrics")
-![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot4.png "List Application Framework running inside a container")
-![alt tag](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot5.png "Plot an all-in-on dashboard for host, container and application framework")
+![Alt text](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot1.png "Dynamically Fetch Hosts Being Monitored")
+![Alt text](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot2.png "Dynamically List Containers Being Monitored")
+![Alt text](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot3.png "Plot a graph for container metrics")
+![Alt text](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot4.png "List Application Framework running inside a container")
+![Alt text](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot5.png "Plot an all-in-on dashboard for host, container and application framework")
 
 - Secondly with [Promdash UI](https://github.com/prometheus/promdash)
 Promdash has deprecated as per the prometheus community and hence we recommend using galaxia-ui project. Below are
