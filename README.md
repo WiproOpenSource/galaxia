@@ -94,11 +94,21 @@ Galaxia comes with 2 UI solution.
 - One which is [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui) 
 being developed as another project side-by-side of galaxia. Below are the screenshots from [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui)
 
+**Dynamically Fetch Hosts Being Monitored**<br/>
 ![Dynamically Fetch Hosts Being Monitored](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot1.png "Dynamically Fetch Hosts Being Monitored")
+<br/>
+**Dynamically List Containers Being Monitored**<br/>
 ![Dynamically List Containers Being Monitored](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot2.png "Dynamically List Containers Being Monitored")
+<br/>
+**Plot a graph for container metrics**<br/>
 ![Plot a graph for container metrics](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot3.png "Plot a graph for container metrics")
+<br/>
+**List Application Framework running inside a container**<br/>
 ![List Application Framework running inside a container](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot4.png "List Application Framework running inside a container")
+<br/>
+**Integrated dashboard for host, container and application framework**<br/>
 ![Integrated dashboard for host, container and application framework](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/screenshot5.png "Plot an all-in-one dashboard for host, container and application framework")
+<br/>
 
 - Secondly with [Promdash UI](https://github.com/prometheus/promdash)
 Promdash has deprecated as per the prometheus community and hence we recommend using galaxia-ui project. Below are
