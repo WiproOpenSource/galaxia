@@ -113,6 +113,12 @@ being developed as another project side-by-side of galaxia. Below are the screen
 - Secondly with [Promdash UI](https://github.com/prometheus/promdash)
 Promdash has deprecated as per the prometheus community and hence we recommend using galaxia-ui project. Below are
 some of the screenshots from promdash
+**Home Page of Promdash with Ecommerece Dashboard**<br/>
+![Home Page of Promdash with Ecommerece Dashboard](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/prom_screenshot1.png "Home Page of Promdash with Ecommerece Dashboard")
+<br/>
+**Container monitoring with Promdash**<br/>
+![Container monitoring with Promdash](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/prom_screenshot2.png "Container monitoring with Promdash")
+<br/>
 
 
 ### How Galaxia works?
@@ -120,7 +126,7 @@ some of the screenshots from promdash
 Galaxia works on the concept of exporter, aggregator and renderer. Here exporter is a docker container which exports
 metrics to the aggregator. Exporter unit runs on each node from which we wish to capture the metrics. Aggregator
 collates metrics from all the exporter in its local database. Renderer connects to aggregator and generates the
-monitoring dashboard.
+monitoring dashboard. Currently renderer is only supported for promdash.
 
 
 ### Setup an ALL-IN-ONE Galaxia
