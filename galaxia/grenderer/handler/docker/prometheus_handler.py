@@ -42,7 +42,7 @@ def get_names_list(message):
         payload = {"query": query, "time": current_time}
         resp = client.http_request("GET", prom_request_url, headers, payload,
                                    None, None)
-        names_list, metrics_list, _, _, _ = response_parser.get_names_list(resp.text)
+        names_list, metrics_list, _, _, _, _ = response_parser.get_names_list(resp.text)
         return names_list, metrics_list
     else:
         return message['names_list'], ""

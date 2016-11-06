@@ -39,7 +39,7 @@ def get_all_containers():
         payload = {"query": query, "time": current_time}
         resp = client.http_request("GET", prom_request_url, headers, payload,
                                    None, None)
-        names_list, _, _, _, _ = response_parser.get_names_list(resp.text)
+        names_list, _, _, _, _, _ = response_parser.get_names_list(resp.text)
         return names_list
 
 
@@ -66,8 +66,8 @@ def get_containers_by_hostname(search_string, search_type):
         payload = {"query": query, "time": current_time}
         resp = client.http_request("GET", prom_request_url, headers, payload,
                                    None, None)
-        names_list, _, hosts_list, image_list, id_list = response_parser.get_names_list(resp.text)
-        return names_list, hosts_list, image_list, id_list
+        names_list, _, hosts_list, image_list, id_list, app_list = response_parser.get_names_list(resp.text)
+        return names_list, hosts_list, image_list, id_list, app_list
 
 
 def get_names_list(search_string, search_type):

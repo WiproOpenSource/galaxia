@@ -19,9 +19,20 @@ import os
 
 log = logging.getLogger(__name__)
 
+# Method to create relabel configs
+
+
+def create_relabel_configs(source_label, regex, target_label, replacement):
+    relabel_configs = {}
+    relabel_configs.update({'source_labels': [source_label]})
+    relabel_configs.update({'regex': regex})
+    relabel_configs.update({'target_label': target_label})
+    relabel_configs.update({'replacement': replacement})
+    return relabel_configs
+
 
 # Method to set target in prometheus.yml file
-def set_target(file_name, job, host, port, protocol, endpoint, instance_key):
+def set_target(file_name, job, host, port, protocol, endpoint, instance_key, **drillargs):
     job_exist = False
     job_handle = None
     source_labels_value = ['__address__']
@@ -47,15 +58,15 @@ def set_target(file_name, job, host, port, protocol, endpoint, instance_key):
                 job_exist = True
                 job_handle = i
 
-            if 'target_groups' in i.keys():
-                j = i['target_groups']
+            if 'static_configs' in i.keys():
+                j = i['static_configs']
                 for k in j:
                     if 'targets' in k.keys() and target == k['targets']:
                         return "Target already exists"
             index += 1
 
         if job_exist:
-            job_handle['target_groups'].append({'targets': [target]})
+            job_handle['static_configs'].append({'targets': [target]})
             if instance_key is not None:
                 if not 'relabel_configs' in job_handle.keys():
                     job_handle['relabel_configs'] = [relabel_configs]
@@ -63,11 +74,15 @@ def set_target(file_name, job, host, port, protocol, endpoint, instance_key):
                     job_handle['relabel_configs'].append(relabel_configs)
         else:
             a['scrape_configs'].append({'job_name': job})
-            a['scrape_configs'][index]['scrape_interval'] = "5s"
+            a['scrape_configs'][index]['scrape_interval'] = "15s"
             a['scrape_configs'][index]['scrape_timeout'] = "10s"
-            a['scrape_configs'][index]['target_groups'] = [{'targets': [target]}]
+            a['scrape_configs'][index]['static_configs'] = [{'targets': [target]}]
             if instance_key is not None:
                 a['scrape_configs'][index]['relabel_configs'] = [relabel_configs]
+            a['scrape_configs'][index]['metric_relabel_configs']= []
+            for key, value in drillargs.items():
+                relabel_config=create_relabel_configs(value, '(.*)', key, '$1')
+                a['scrape_configs'][index]['metric_relabel_configs'].append(relabel_config)
         stream.close()
 
         with open(file_name, 'w') as outfile:
@@ -76,7 +91,7 @@ def set_target(file_name, job, host, port, protocol, endpoint, instance_key):
 
 
 # Method to set SD in prometheus yml file
-def set_sd(file_name, job, host, port, protocol, sub_type):
+def set_sd(file_name, job, host, port, protocol, sub_type, **drillargs):
     sd_template = sub_type+".yml"
     file_consul_template = os.path.join(os.path.dirname(template_data.__file__), sd_template)
     with open(file_consul_template) as f:
@@ -105,10 +120,14 @@ def set_sd(file_name, job, host, port, protocol, sub_type):
             job_handle['relabel_configs']= newdct
         else:
             a['scrape_configs'].append({'job_name': job})
-            a['scrape_configs'][index]['scrape_interval'] = "5s"
+            a['scrape_configs'][index]['scrape_interval'] = "15s"
             a['scrape_configs'][index]['scrape_timeout'] = "10s"
             a['scrape_configs'][index]['consul_sd_configs'] = [{'server': target}]
             a['scrape_configs'][index]['relabel_configs'] = newdct
+            a['scrape_configs'][index]['metric_relabel_configs']= []
+            for key, value in drillargs.items():
+                relabel_config=create_relabel_configs(value, '(.*)', key, '$1')
+                a['scrape_configs'][index]['metric_relabel_configs'].append(relabel_config)
         stream.close()
 
         with open(file_name, 'w') as outfile:

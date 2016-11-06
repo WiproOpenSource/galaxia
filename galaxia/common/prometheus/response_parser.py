@@ -24,6 +24,7 @@ def get_names_list(resp):
     hosts_list = []
     image_list = []
     id_list = []
+    app_framework_list = []
     result_list = json.loads(resp)['data']['result']
 
     for i in result_list:
@@ -33,8 +34,12 @@ def get_names_list(resp):
             hosts_list.append(i['metric'].get('instance').split(':')[0])
             image_list.append(i['metric'].get('image'))
             id_list.append(i['metric'].get('id'))
+            if i['metric'].get('application_framework'):
+                app_framework_list.append(i['metric'].get('application_framework'))
+            else:
+                app_framework_list.append('None')
 
-    return names_list, metrics_list, hosts_list, image_list, id_list
+    return names_list, metrics_list, hosts_list, image_list, id_list, app_framework_list
 
 
 def get_node_name_list(resp):

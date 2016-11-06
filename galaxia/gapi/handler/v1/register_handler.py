@@ -54,6 +54,24 @@ CONF.set_override('prometheus_template', CONF.gapi.prometheus_template, opt_grou
 CONF.set_override('pkey', CONF.gapi.pkey, opt_group)
 CONF.set_override('key_filename', CONF.gapi.key_filename, opt_group)
 
+DRILLDOWN_OPTS = [
+    cfg.StrOpt('application_framework'),
+    cfg.StrOpt('application_name'),
+    cfg.StrOpt('service_name'),
+    cfg.StrOpt('container_name'),
+    cfg.StrOpt('custom_label_prefix')
+]
+
+CONF = cfg.CONF
+drilldown_group = cfg.OptGroup(name='drilldown', title='Options for drill down')
+CONF.register_group(drilldown_group)
+CONF.register_opts(DRILLDOWN_OPTS, drilldown_group)
+
+CONF.set_override('application_framework', CONF.drilldown.application_framework, drilldown_group)
+CONF.set_override('application_name', CONF.drilldown.application_name, drilldown_group)
+CONF.set_override('service_name', CONF.drilldown.service_name, drilldown_group)
+CONF.set_override('container_name', CONF.drilldown.container_name, drilldown_group)
+CONF.set_override('custom_label_prefix', CONF.drilldown.custom_label_prefix, drilldown_group)
 
 log = logging.getLogger(__name__)
 
@@ -120,7 +138,7 @@ class RegisterHandler():
         protocol = "http"
         job_name = kwargs["job_name"]
         if type is 'node' or type is 'container' or type is 'app':
-            instance_key= kwargs["instance_key"]
+            instance_key = kwargs["instance_key"]
 
         if type is 'node' or type is 'container' or type is 'app':
             target = target = protocol+ "://"+host+":"+port+endpoint
@@ -134,13 +152,19 @@ class RegisterHandler():
         if status is 'failure':
             return "Unable to reach the agent on target machine @ %s" %target
 
+        # create drill down opts kwargs
+        drill_args = {'application_framework': CONF.drilldown.custom_label_prefix+CONF.drilldown.application_framework,\
+                      'application_name': CONF.drilldown.custom_label_prefix+CONF.drilldown.application_name,\
+                      'service_name': CONF.drilldown.custom_label_prefix+CONF.drilldown.service_name,\
+                      'container_name': CONF.drilldown.container_name}
+
         # Read the prometheus yaml file, parse it and set job_name, target and save the file back
         base_file = CONF.gapi.prometheus_template
         if type is 'node' or type is 'container' or type is 'app':
-            yaml_helper.set_target(base_file, job_name, host, port, protocol, endpoint, instance_key)
+            yaml_helper.set_target(base_file, job_name, host, port, protocol, endpoint, instance_key, **drill_args)
         elif type is 'sd':
             sub_type = kwargs['sub_type']
-            yaml_helper.set_sd(base_file, job_name, host, port, protocol, sub_type)
+            yaml_helper.set_sd(base_file, job_name, host, port, protocol, sub_type, **drill_args)
 
         # SCP the updated prometheus file to prometheus host
         self.update_prometheus_config(base_file)

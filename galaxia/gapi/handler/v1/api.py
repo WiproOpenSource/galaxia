@@ -215,7 +215,7 @@ class ApiHandler():
         meter_name = kwargs['meter_name']
         unit_type = kwargs['unit_type']
 
-        if   search_string is None or search_type is None:
+        if search_string is None or search_type is None:
             expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), None, None)
         else:
             expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), search_type, search_string)
