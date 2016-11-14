@@ -26,12 +26,13 @@ def create_request_data(**kwargs):
     :param kwargs: key/value pair
     :return: json data
     """
-
     data = {}
     for key, value in kwargs.iteritems():
         if "list" in key and not (value is None) and not "metrics_list" in key:
             temp = split_and_convert(key,value)
             data[key]=temp
+        elif "metrics_list" in key:
+            data[key] = [{'name': n} for n in value]
         else:
             data[key]=value
     return json.dumps(data)

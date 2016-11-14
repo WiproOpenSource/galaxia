@@ -170,10 +170,10 @@ class MetricsCommands(cli_utils.BaseParser):
     def list(self):
         resp = None
         self.parser.add_argument('--type', help="Type of unit valid values are\
-                                containers, nodes", choices=['container'], required=True)
+                                containers, nodes", required=True)
         args = self.parser.parse_args()
         unit_type = vars(args)['type']
-        data = {"type": unit_type}
+        data = {"sub_type": unit_type}
         galaxia_api_endpoint = os.getenv("galaxia_api_endpoint")
         target_url = client.concatenate_url(galaxia_api_endpoint, self.metrics_uri)
         try:
@@ -187,7 +187,7 @@ class MetricsCommands(cli_utils.BaseParser):
     def sample(self):
         resp = None
         self.parser.add_argument('--type', help="Type of unit valid values are\
-                                containers, nodes", choices=['container'], required=True)
+                                containers, nodes", required=True)
         self.parser.add_argument('--search-string', help='Search String', required=False)
         self.parser.add_argument('--search-type', help='Search String', required=False)
         self.parser.add_argument('--meter-name', help='Name of the meter', required=True)
@@ -233,9 +233,9 @@ class DashboardCommands(cli_utils.BaseParser):
 
     def create(self):
         self.parser.add_argument('--name', help='Name of the dashboard', required=True)
-        self.parser.add_argument('--metrics-list', help='List of \
-                                metrics to be displayed on the dashboard',
-                                 required=True)
+        self.parser.add_argument('--metrics-list', nargs='+')#help='List of \
+#                                metrics to be displayed on the dashboard',
+ #                                required=True)
         self.parser.add_argument('--names-list', help='Names list of \
                                 units to plot in dashboard')
         self.parser.add_argument('--search-string', help='Search String')
