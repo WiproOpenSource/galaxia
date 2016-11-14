@@ -68,7 +68,7 @@ def create_json(name, unit_list, metrics_list, unit_type):
         widget["resolution"] = widgets_resolution
         widget["endTime"] = None
 
-        for j in json.loads(metrics_list):
+        for j in metrics_list:
             expression = {}
             legendFormatString = {}
             axe = {}
