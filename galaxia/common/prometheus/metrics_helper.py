@@ -18,7 +18,7 @@ def get_metrics_with_labels(metrics_json, search_type, search_string):
     label_string = ''
     label_separator = ','
     i=0
-    if metrics_json['label'] is not None:
+    if 'label' in metrics_json and metrics_json['label'] is not None:
         for key,value in metrics_json['label'].iteritems():
             if i==1:
                 label_string = label_string+label_separator
@@ -26,6 +26,9 @@ def get_metrics_with_labels(metrics_json, search_type, search_string):
             i=1
 
     if search_type is not None and search_string is not None:
-        label_string = label_string + label_separator + search_type+'=~'+ '"' + search_string + '"'
+        if label_string is '':
+            label_string = search_type+'=~'+ '"' + search_string + '"'
+        else:
+            label_string = label_string + label_separator + search_type+'=~'+ '"' + search_string + '"'
 
     return metrics_name+'{'+label_string+'}'

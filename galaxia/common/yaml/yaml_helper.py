@@ -58,15 +58,15 @@ def set_target(file_name, job, host, port, protocol, endpoint, instance_key, **d
                 job_exist = True
                 job_handle = i
 
-            if 'static_configs' in i.keys():
-                j = i['static_configs']
+            if 'target_groups' in i.keys():
+                j = i['target_groups']
                 for k in j:
                     if 'targets' in k.keys() and target == k['targets']:
                         return "Target already exists"
             index += 1
 
         if job_exist:
-            job_handle['static_configs'].append({'targets': [target]})
+            job_handle['target_groups'].append({'targets': [target]})
             if instance_key is not None:
                 if not 'relabel_configs' in job_handle.keys():
                     job_handle['relabel_configs'] = [relabel_configs]
@@ -76,7 +76,7 @@ def set_target(file_name, job, host, port, protocol, endpoint, instance_key, **d
             a['scrape_configs'].append({'job_name': job})
             a['scrape_configs'][index]['scrape_interval'] = "15s"
             a['scrape_configs'][index]['scrape_timeout'] = "10s"
-            a['scrape_configs'][index]['static_configs'] = [{'targets': [target]}]
+            a['scrape_configs'][index]['target_groups'] = [{'targets': [target]}]
             if instance_key is not None:
                 a['scrape_configs'][index]['relabel_configs'] = [relabel_configs]
             a['scrape_configs'][index]['metric_relabel_configs']= []
