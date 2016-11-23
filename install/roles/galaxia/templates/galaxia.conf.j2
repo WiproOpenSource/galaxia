@@ -10,6 +10,7 @@ rabbitmq_host={{ ansible_hostname }}
 log_file={{ ansible_env.HOME}}/gapi.log
 log_level=INFO
 topic_exporter=gexporter
+threshold_time=20
 username=vagrant
 password=vagrant
 pkey=
@@ -52,6 +53,24 @@ password=root
 
 [catalogue]
 node=node_uname_info
+node_remove=
 docker=container_last_seen
+docker_remove=
 tomcat=catalina_threadpool_maxthreads{name=~"ajp"}
-cassandra=org_apache_cassandra_metrics_table_value{keyspace="system",scope="hints",name="KeyCacheHitRate"}
+tomcat_remove=name
+cassandra=java_lang_garbagecollector_lastgcinfo_memoryusagebeforegc_max{name="ParNew",key="Par Survivor Space"}
+cassandra_remove=name,key
+mongodb=mongodb_connections{state="available"}
+mongodb_remove=state
+mysql=mysql_up
+mysql_remove=
+postgres=pg_exporter_scrapes_total
+postgres_remove=
+
+[drilldown]
+custom_label_prefix=container_label_
+application_framework=app_framework
+application_name=app_name
+service_name=serv_name
+#container_name=consul_service_id
+container_name=instance_key

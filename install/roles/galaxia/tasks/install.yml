@@ -13,6 +13,8 @@
   with_items:
        - python-mysqldb
        - python-dev
+       - python-pip
+       - git
 
 - name: Install python module
   pip: name=MySQL-python
@@ -24,7 +26,7 @@
     cd {{ galaxia_root_dir }};
     pip install -r requirements.txt;
     python setup.py install;
-    python tools/database.py --host {{ mysql_host }} --type mysql --username root --password root;
+    python tools/database.py --host {{ mysql_host }} --type mysql --username root --password root --csvfile tools/all.csv;
     
 - name: create galaxia config file
   template: src=galaxia.conf.j2 dest={{ galaxia_config_dir }}/galaxia.conf
