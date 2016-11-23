@@ -141,7 +141,7 @@ class RegisterHandler():
             instance_key = kwargs["instance_key"]
 
         if type is 'node' or type is 'container' or type is 'app':
-            target = target = protocol+ "://"+host+":"+port+endpoint
+            target = protocol+ "://"+host+":"+port+endpoint
         else:
             target = protocol+ "://"+host+":"+port
 
