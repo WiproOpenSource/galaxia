@@ -25,7 +25,7 @@
     tar xfz prometheus-{{prometheus_version}}.linux-amd64.tar.gz;
     
 - name: create prometheus config file
-  template: src=prometheus.yml.j2 dest={{ prometheus_config_dir }}/prometheus.yml
+  template: src=prometheus.yml.j2 dest={{ prometheus_config_dir }}/prometheus.yml mode=0755 owner= {{ prometheus_user }}
 
 - name: create prometheus upstart init files
   template: >
