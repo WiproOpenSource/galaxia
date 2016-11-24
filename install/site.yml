@@ -10,4 +10,5 @@
     - { role: docker,        tags: docker }
     - { role: exporter,      tags: exporter }
     - { role: galaxia,       tags: galaxia }
+    - { role: sshkeygen}
     

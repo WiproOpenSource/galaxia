@@ -2,6 +2,5 @@
 galaxia_root_dir: /opt/galaxia_src/galaxia
 galaxia_config_dir: /etc/galaxia
 mysql_host: localhost
-target_keyfile_location: /tmp/test.pub
-source_keyfile_location: test.pub
+target_keyfile_location: /root/.ssh/id_rsa.pub
 
