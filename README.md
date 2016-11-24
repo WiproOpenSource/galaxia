@@ -449,10 +449,31 @@ sudo docker run --name sample_http1 -d  httpd
 
 ```
 source openrc_example
-galaxia --help
-galaxia metrics list --type container
-galaxia dashboard create --metrics-list container_memory_usage_bytes --names-list sample_http --name tes --unit-type docker
-galaxia dashboard create --metrics-list container_memory_usage_bytes --search-string sample --search-type name --unit-type docker --name test1
+1) galaxia --help
+2) galaxia metrics list - This will give the list of supported metrics for each type. Some examples
+below:
+galaxia metrics list --type docker
+galaxia metrics list --type node
+galaxia metrics list --type postgres
+galaxia metrics list --type mysql
+galaxia metrics list --type tomcat
+3) galaxia dashboard create - This will create a dashboard on promdash.Some examples below:
+galaxia dashboard create --name terase092 --metrics-list container_memory_usage_bytes container_cpu_system_seconds_total 
+--search-string 192.168.76 --search-type instance --unit-type docker
+galaxia dashboard create --name terase092 --metrics-list container_memory_usage_bytes container_cpu_system_seconds_total 
+--search-string 192.168.76 --search-type instance --unit-type docker –-exclude 1
+4) galaxia catalogue list - This will list all the entities being monitored for a type
+galaxia catalogue list --unit-type container
+galaxia catalogue list --unit-type node
+5) galaxia status list - availability monitoring
+galaxia status list --unit-type container
+galaxia status list --unit-type container --time-interval 1w
+6) galaxia label list - List out the labels for a metrics
+galaxia label list --unit-type container --meter-name container_fs_read_seconds_total
+galaxia label list --unit-type app  --meter-name pg_runtime_variable_max_connections
+7) galaxia register agent - Onboards an application, node, container
+galaxia register agent --unit-type app --host 192.168.76.20 --port 9104 --instance-key mysql001 --job-name OpenSourcePractice
+
 ```
 
 - Using curl command
