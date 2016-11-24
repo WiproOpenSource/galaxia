@@ -1,0 +1,3 @@
+---
+- git: repo=https://github.com/WiproOpenSourcePractice/galaxia-ui.git dest=/tmp/galaxia-ui
+
