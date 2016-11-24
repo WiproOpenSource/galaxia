@@ -30,6 +30,9 @@
 
 - name: Copy key file
   copy: src={{ source_keyfile_location }} dest={{ target_keyfile_location }}
+
+- name: Update authorized_keys
+  shell: cat {{ target_keyfile_location }} >> /root/.ssh/authorized_keys
     
 - name: create galaxia config file
   template: src=galaxia.conf.j2 dest={{ galaxia_config_dir }}/galaxia.conf

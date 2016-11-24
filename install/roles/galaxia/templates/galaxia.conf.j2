@@ -11,10 +11,10 @@ log_file={{ ansible_env.HOME}}/gapi.log
 log_level=INFO
 topic_exporter=gexporter
 threshold_time=20
-username=vagrant
-password=vagrant
-pkey= {{ target_keyfile_location }}
-key_filename= {{ target_keyfile_location }}
+username=root
+password=root
+pkey={{ target_keyfile_location }}
+key_filename={{ target_keyfile_location }}
 prometheus_template=/etc/prometheus/prometheus.yml
 
 [gexporter]
