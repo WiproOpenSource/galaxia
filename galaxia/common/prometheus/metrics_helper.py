@@ -32,3 +32,9 @@ def get_metrics_with_labels(metrics_json, search_type, search_string):
             label_string = label_string + label_separator + search_type+'=~'+ '"' + search_string + '"'
 
     return metrics_name+'{'+label_string+'}'
+
+def aggregationimpl():
+    print "TO BE IMPLEMENTED"
+
+def functionimpl():
+    print "TO BE IMPLEMENTED"

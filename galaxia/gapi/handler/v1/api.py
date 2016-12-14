@@ -220,6 +220,25 @@ class ApiHandler():
         else:
             expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), search_type, search_string)
 
+        if 'function_type' in kwargs and 'function_time' in kwargs:
+            expr = kwargs['function_type']+"("+expr+"["+kwargs['function_time']+"]"+")"
+
+        if 'aggregation_op' in kwargs:
+            expr = kwargs['aggregation_op']+"("+expr+")"
+
+        if 'aggregation_over_time' in kwargs and 'aggregation_over_time_value' in kwargs:
+            expr = kwargs['aggregation_over_time']+"_over_time"+"("+expr+"["+kwargs['aggregation_over_time_value']+"]"+")"
+
+        if 'aggregation_paramop' in kwargs and 'aggregation_paramval' in kwargs:
+            expr = kwargs['aggregation_paramop']+"("+kwargs['aggregation_paramval']+","+"("+expr+")"+")"
+
+        if 'group_by' in kwargs:
+            expr =  expr+' by '+"("+kwargs['group_by']+")"
+
+        if 'not_group_by' in kwargs:
+            expr = expr + ' without '+"("+kwargs['not_group_by']+")"
+
+
         log.info("Expression %s", expr)
         instance_value_list = prometheus_helper.get_metrics(expr, unit_type)
         kwargs['result_list'] = instance_value_list
