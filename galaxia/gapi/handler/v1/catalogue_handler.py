@@ -158,9 +158,7 @@ class CatalogueHandler(object):
         return json.dumps(dict(result.fetchall()))
 
     def node(self, search_string, search_type, subtype):
-        names_list, nodename_list = prometheus_helper.get_names_list(search_string, search_type)
-        dictionary = dict(zip(names_list, nodename_list))
-        return json.dumps(dictionary)
+        return prometheus_helper.get_names_list(search_string, search_type)
 
     def app(self, search_string, search_type, subtype):
         if subtype == "tomcat":

@@ -84,8 +84,8 @@ def get_names_list(search_string, search_type):
         payload = {"query": query, "time": current_time}
         resp = client.http_request("GET", prom_request_url, headers,
                                    payload, None, None)
-        names_list, nodename_list = response_parser.get_node_name_list(resp.text)
-        return names_list, nodename_list
+        node_list = response_parser.get_node_name_list(resp.text)
+        return node_list
 
 
 def get_containers_by_status(search_string, search_type, time_interval, status, threshold_time):

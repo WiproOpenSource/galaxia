@@ -43,6 +43,18 @@ def get_names_list(resp):
 
 
 def get_node_name_list(resp):
+    temp=[]
+    result_list = json.loads(resp)['data']['result']
+
+    for i in result_list:
+        del i['value']
+        del i['metric']['__name__']
+        i['metric']['host']=i['metric']['instance'].split(':')[0]
+        temp.append(i['metric'])
+
+    return json.dumps(temp)
+'''
+def get_node_name_list(resp):
     instance_list = []
     nodename_list = []
     result_list = json.loads(resp)['data']['result']
@@ -52,7 +64,7 @@ def get_node_name_list(resp):
         nodename_list.append(i['metric'].get('nodename'))
 
     return instance_list, nodename_list
-
+'''
 
 def get_names_with_status_list(resp, threshold_time):
     names_list = []
@@ -112,7 +124,7 @@ def get_app_list(resp, argv):
     for i in result_list:
         del i['value']
         del i['metric']['__name__']
-        i['metric']['instance']=i['metric']['instance'].split(':')[0]
+        i['metric']['host']=i['metric']['instance'].split(':')[0]
         for j in argv:
             if j in i['metric'].keys():
                 del i['metric'][j]
