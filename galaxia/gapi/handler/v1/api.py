@@ -216,27 +216,27 @@ class ApiHandler():
         unit_type = kwargs['unit_type']
 
         if search_string is None or search_type is None:
-            expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), None, None)
+            expr = metrics_helper.get_metrics_with_labels(meter_name, None, None)
         else:
-            expr = metrics_helper.get_metrics_with_labels(json.loads(json.dumps(meter_name)), search_type, search_string)
+            expr = metrics_helper.get_metrics_with_labels(meter_name, search_type, search_string)
 
-        if 'function_type' in kwargs and 'function_time' in kwargs:
-            expr = kwargs['function_type']+"("+expr+"["+kwargs['function_time']+"]"+")"
+        if 'function_type' in meter_name and 'function_time' in meter_name:
+            expr = meter_name['function_type']+"("+expr+"["+meter_name['function_time']+"]"+")"
 
-        if 'aggregation_op' in kwargs:
-            expr = kwargs['aggregation_op']+"("+expr+")"
+        if 'aggregation_op' in meter_name:
+            expr = meter_name['aggregation_op']+"("+expr+")"
 
-        if 'aggregation_over_time' in kwargs and 'aggregation_over_time_value' in kwargs:
-            expr = kwargs['aggregation_over_time']+"_over_time"+"("+expr+"["+kwargs['aggregation_over_time_value']+"]"+")"
+        if 'aggregation_over_time' in meter_name and 'aggregation_over_time_value' in meter_name:
+            expr = meter_name['aggregation_over_time']+"_over_time"+"("+expr+"["+meter_name['aggregation_over_time_value']+"]"+")"
 
-        if 'aggregation_paramop' in kwargs and 'aggregation_paramval' in kwargs:
-            expr = kwargs['aggregation_paramop']+"("+kwargs['aggregation_paramval']+","+"("+expr+")"+")"
+        if 'aggregation_paramop' in meter_name and 'aggregation_paramval' in meter_name:
+            expr = meter_name['aggregation_paramop']+"("+meter_name['aggregation_paramval']+","+"("+expr+")"+")"
 
-        if 'group_by' in kwargs:
-            expr =  expr+' by '+"("+kwargs['group_by']+")"
+        if 'group_by' in meter_name:
+            expr =  expr+' by '+"("+meter_name['group_by']+")"
 
-        if 'not_group_by' in kwargs:
-            expr = expr + ' without '+"("+kwargs['not_group_by']+")"
+        if 'not_group_by' in meter_name:
+            expr = expr + ' without '+"("+meter_name['not_group_by']+")"
 
 
         log.info("Expression %s", expr)
