@@ -68,6 +68,12 @@ CATALOGUE_SERVICE_OPTS = [
                ),
     cfg.StrOpt('postgres_remove',
                default=''
+               ),
+    cfg.StrOpt('redis',
+               default='redis_exporter_scrapes_total'
+               ),
+    cfg.StrOpt('redis_remove',
+               default=''
                )
 ]
 
@@ -90,6 +96,8 @@ CONF.set_override('mysql', CONF.catalogue.mysql, opt_group )
 CONF.set_override('mysql_remove', CONF.catalogue.mysql_remove, opt_group )
 CONF.set_override('postgres', CONF.catalogue.postgres, opt_group )
 CONF.set_override('postgres_remove', CONF.catalogue.postgres_remove, opt_group )
+CONF.set_override('redis', CONF.catalogue.redis, opt_group)
+CONF.set_override('redis_remove', CONF.catalogue.redis_remove, opt_group)
 log = logging.getLogger(__name__)
 
 
@@ -171,3 +179,5 @@ class CatalogueHandler(object):
             return prometheus_helper.get_apps(CONF.catalogue.mysql, search_type, search_string,tuple(CONF.catalogue.mysql_remove.split(',')))
         elif subtype == 'postgres':
             return prometheus_helper.get_apps(CONF.catalogue.postgres, search_type, search_string, tuple(CONF.catalogue.postgres_remove.split(',')))
+        elif subtype == 'redis':
+            return prometheus_helper.get_apps(CONF.catalogue.redis, search_type, search_string, tuple(CONF.catalogue.redis_remove.split(',')))
