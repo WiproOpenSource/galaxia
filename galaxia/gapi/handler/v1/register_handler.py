@@ -24,6 +24,8 @@ import json
 import paramiko
 import scp
 from oslo_config import cfg
+from galaxia.common.drilldown import load_mapping
+
 
 
 # Register options for the api service
@@ -152,12 +154,7 @@ class RegisterHandler():
         if status is 'failure':
             return "Unable to reach the agent on target machine @ %s" %target
 
-        # create drill down opts kwargs
-        drill_args = {'application_framework': CONF.drilldown.custom_label_prefix+CONF.drilldown.application_framework,\
-                      'application_name': CONF.drilldown.custom_label_prefix+CONF.drilldown.application_name,\
-                      'service_name': CONF.drilldown.custom_label_prefix+CONF.drilldown.service_name,\
-                      'container_name': CONF.drilldown.container_name}
-
+        drill_args =  load_mapping.getrelabelconfigs()
         # Read the prometheus yaml file, parse it and set job_name, target and save the file back
         base_file = CONF.gapi.prometheus_template
         if type is 'node' or type is 'container' or type is 'app':
