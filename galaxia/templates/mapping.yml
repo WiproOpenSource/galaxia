@@ -1,0 +1,65 @@
+mapping:
+       - sourcelabel: application
+         targetlabel: appname
+         datasource: container_last_seen
+         description: Name of the application
+         returnfields:
+           - instance
+           - job
+           - application
+         nextfields:
+           - service
+           - app_framework
+       - sourcelabel: service
+         targetlabel: servname
+         datasource: container_last_seen
+         description: Name of the service
+         returnfields:
+            - instance
+            - job
+            - app_framework
+            - service_name
+         nextfields:
+            - application
+            - app_framework
+       - sourcelabel: framework
+         datasource: container_last_seen
+         targetlabel: appframework
+         description: Application framework
+         returnfields:
+            - instance
+            - job
+            - framework
+         nextfields:
+            - application
+            - services
+       - sourcelabel: container
+         datasource: container_last_seen
+         targetlabel: name
+         description: Application framework
+         returnfields:
+            - container
+            - image
+            - framework
+            - instance
+            - id
+         nextfields:
+            - application
+            - services
+       - sourcelabel: node
+         datasource: container_last_seen
+         targetlabel: instance
+         description: host details
+         returnfields:
+            - node
+            - instance
+         nextfields:
+            - container
+       - sourcelabel: datacenter
+         datasource: container_last_seen
+         targetlabel: dc
+         description: datacenter details
+         returnfields:
+            - datacenter
+         nextfields:
+            - node

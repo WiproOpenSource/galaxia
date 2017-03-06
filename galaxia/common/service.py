@@ -20,6 +20,7 @@ from oslo_config import cfg
 
 from galaxia.common.logging import log_helper
 from galaxia.gdata.common import sql_helper
+from galaxia.common.drilldown import load_mapping
 
 # Register options for logger
 LOGGING_SERVICE_OPTS = [
@@ -72,3 +73,4 @@ def prepare_service(service_name, argv=[]):
 
     sql_helper.init_db(cfg.CONF.db.type, cfg.CONF.db.username,
                        cfg.CONF.db.password, cfg.CONF.db.db_host, "galaxia")
+    load_mapping.initialize()
