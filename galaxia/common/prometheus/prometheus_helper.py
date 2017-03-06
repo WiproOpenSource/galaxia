@@ -20,6 +20,7 @@ from galaxia.common.prometheus import response_parser
 import os
 import datetime
 import logging
+import json
 
 
 log = logging.getLogger(__name__)
@@ -157,3 +158,23 @@ def get_apps(meter_name, search_type, search_string, *argv):
     app_list = response_parser.get_app_list(resp.text, *argv)
     log.info("app list %s", app_list)
     return app_list
+
+
+def get_entities(tdict, rfields, nfields, subtype, meter_name):
+    finalresult = {}
+    prom_request_url = client.concatenate_url(
+        os.getenv("aggregator_endpoint"), query_url)
+    labels = ''
+    if tdict is not None:
+        for key,value in tdict.iteritems():
+            labels = key + "=~" + '"' + value + '"' + "," + labels
+    meter_name_final = meter_name + "{" + labels + subtype + "=~" + '"' + "[^:]+" + '"' + "}"
+    current_time = str(datetime.datetime.now().isoformat())+"Z"
+    payload = {"query": meter_name_final, "time": current_time}
+    resp = client.http_request("GET", prom_request_url, headers, payload,
+                                   None, None)
+    entities_list = response_parser.get_entities(resp, rfields, subtype)
+    finalresult['result_list']= entities_list
+    finalresult['nextfields'] = nfields
+    return json.dumps(finalresult)
+

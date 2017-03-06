@@ -16,7 +16,9 @@
 Prometheus response parser
 """
 import json
-
+import ast
+from operator import itemgetter
+import itertools
 
 def get_names_list(resp):
     names_list = []
@@ -81,7 +83,6 @@ def get_names_with_status_list(resp, threshold_time):
                 status_list.append('off')
             else:
                 status_list.append('on')
-
     return names_list, status_list
 
 
@@ -97,7 +98,6 @@ def get_jmx_names_list(resp):
         if i['value'][1] == 0:
             instance_list.append(i['metric'].get('instance').split(':')[0])
             job_list.append(i['metric'].get('job'))
-
     return instance_list, job_list
 
 
@@ -129,7 +129,6 @@ def get_app_list(resp, argv):
             if j in i['metric'].keys():
                 del i['metric'][j]
         temp.append(i['metric'])
-
     return json.dumps(temp)
 
 
@@ -146,6 +145,44 @@ def get_metrics(resp, unit_type):
         time = i['value'][0]
         instance_value = {"instance_key": instance_key, "value": value, "time": time}
         instance_value_list.append(instance_value)
-
     return instance_value_list
 
+
+def get_entities(resp, rfields, subtype):
+    result_list = []
+    i_result = json.loads(resp.text)['data']['result']
+    temp_set =  set()
+    temp_list = []
+    final_result = []
+
+    for i in i_result:
+        del i['value']
+        del i['metric']['__name__']
+        temp = {}
+        for j in rfields:
+            if j in i['metric'].keys():
+                if j == 'instance' or j == 'node' or j == 'host' :
+                    temp[j] = i['metric'][j].split(':')[0]
+                else:
+                    temp[j]= i['metric'][j]
+        result_list.append(temp)
+
+    for i in result_list:
+        temp_set.add(json.dumps(i))
+
+    for i in temp_set:
+        temp_list.append(ast.literal_eval(i))
+
+    sorted_list = sorted(temp_list, key=itemgetter(subtype))
+
+
+    for key,value in  itertools.groupby(sorted_list, key=itemgetter(subtype)):
+        temp_dict = {}
+        l_list = []
+        temp_dict[subtype] = key
+        for i in value:
+            l_list.append(i)
+        temp_dict['returnfields'] = l_list
+        final_result.append(temp_dict)
+
+    return final_result

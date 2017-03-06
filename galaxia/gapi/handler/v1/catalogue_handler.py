@@ -23,6 +23,7 @@ from galaxia.gdata.common import sql_helper
 from sqlalchemy.exc import SQLAlchemyError
 import logging
 from oslo_config import cfg
+from galaxia.common.drilldown import load_mapping
 
 
 # Register options for the api service
@@ -103,9 +104,10 @@ log = logging.getLogger(__name__)
 
 class CatalogueHandler(object):
 
-    def get_units(self, unit_type, search_string, search_type, subtype):
+    def get_units(self,**kwargs):
+        unit_type = kwargs['unit_type']
         if unit_type in self._function:
-            return self._function[unit_type](search_string,search_type, subtype)
+            return self._function[unit_type](**kwargs)
 
     @property
     def _function(self):
@@ -181,3 +183,13 @@ class CatalogueHandler(object):
             return prometheus_helper.get_apps(CONF.catalogue.postgres, search_type, search_string, tuple(CONF.catalogue.postgres_remove.split(',')))
         elif subtype == 'redis':
             return prometheus_helper.get_apps(CONF.catalogue.redis, search_type, search_string, tuple(CONF.catalogue.redis_remove.split(',')))
+
+    def generic(self, **kwargs):
+        tdict = {}
+        for key, value in kwargs.iteritems():
+            if not(key == 'unit_type' or key == 'sub_type'):
+                tdict[key] = value
+        rfields = load_mapping.MappingFile.getRfields(load_mapping.odict[kwargs['sub_type']])
+        nfields = load_mapping.MappingFile.getNfields(load_mapping.odict[kwargs['sub_type']])
+        meter_name = load_mapping.MappingFile.getDatasource(load_mapping.odict[kwargs['sub_type']])
+        return prometheus_helper.get_entities(tdict, rfields, nfields, kwargs['sub_type'], meter_name)
