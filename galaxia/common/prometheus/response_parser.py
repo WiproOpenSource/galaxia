@@ -161,7 +161,7 @@ def get_entities(resp, rfields, subtype):
         temp = {}
         for j in rfields:
             if j in i['metric'].keys():
-                if j == 'instance' or j == 'node' or j == 'host' :
+                if j == 'instance' or j == 'host' :
                     temp[j] = i['metric'][j].split(':')[0]
                 else:
                     temp[j]= i['metric'][j]
