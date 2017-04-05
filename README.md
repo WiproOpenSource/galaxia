@@ -97,10 +97,15 @@ Currently [galaxia](https://github.com/WiproOpenSourcePractice/galaxia) has inte
 being developed as another project side-by-side of galaxia. Below are the screenshots from [galaxia-ui](https://github.com/WiproOpenSourcePractice/galaxia-ui)
 
 **Summary of the complete target infrastructure**<br/>
-![Dynamically Fetch Hosts Being Monitored](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/1.png "Summary of the complete target infrastructure")
+This screenshot details the complete summary of your target infrastructure and applications.
+![Summary of the complete target infrastructure](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/1.png "Summary of the complete target infrastructure")
+<br/>
+<br/>
 <br/>
 **List of hosts currently being monitored**<br/>
-![Dynamically List Containers Being Monitored](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/2.png "List of hosts currently being monitored")
+This screenshot Lists the summary of host bein monitored currently
+![List of hosts currently being monitored](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/2.png "List of hosts currently being monitored")
+<br/>
 <br/>
 
 - Secondly with [Promdash UI](https://github.com/prometheus/promdash)
