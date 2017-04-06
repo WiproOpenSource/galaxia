@@ -107,6 +107,16 @@ This screenshot Lists the summary of host bein monitored currently
 ![List of hosts currently being monitored](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/2.png "List of hosts currently being monitored")
 <br/>
 <br/>
+**Favorite metrics for host**<br/>
+This screenshot lists the favorite metrics of host being monitored currently
+![host favorite metrics](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/3.png "host favorite metrics")
+<br/>
+<br/>
+**Favorite metrics for host**<br/>
+This screenshot lists the drill down between host and containers
+![Drill down](https://raw.githubusercontent.com/WiproOpenSourcePractice/galaxia/master/doc/4.png "Drill down")
+<br/>
+<br/>
 
 - Secondly with [Promdash UI](https://github.com/prometheus/promdash)
 Promdash has deprecated as per the prometheus community and hence we recommend using galaxia-ui project. Promdash find integration with
