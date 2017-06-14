@@ -7,7 +7,7 @@ port=7000
 host=0.0.0.0
 topic=grenderer
 rabbitmq_host={{ ansible_hostname }}
-log_file={{ ansible_env.HOME}}/gapi.log
+log_file=/tmp/gapi.log
 log_level=INFO
 topic_exporter=gexporter
 threshold_time=20
@@ -23,7 +23,7 @@ rabbitmq_host={{ ansible_hostname }}
 rabbitmq_username=guest
 #rabbitmq_password=guest
 topic=gexporter
-log_file={{ ansible_env.HOME}}/gexporter.log
+log_file=/tmp/gexporter.log
 log_level=INFO
 scheduler_db_url=mysql://root:root@{{mysql_host}}/galaxia
 nova_endpoint=http://{{ ansible_hostname }}:8774/v2
@@ -42,7 +42,7 @@ aggregator=prometheus
 dashboard_handler=promdash
 topic=grenderer
 renderer_db_url=mysql://root:root@{{mysql_host}}/galaxia
-log_file={{ ansible_env.HOME}}/grenderer.log
+log_file=/tmp/grenderer.log
 log_level=INFO
 
 [db]
