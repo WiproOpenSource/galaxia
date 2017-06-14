@@ -194,8 +194,10 @@ class ApiHandler():
         conn = sql_helper.engine.connect()
         sql_query = query_list.GET_METRICS
         params = sub_type
+        final_query =  sql_query % '"'+params+'"'
         try:
-            result = conn.execute(sql_query, params)
+            #result = conn.execute(sql_query, params)
+            result = conn.execute(final_query)
         except SQLAlchemyError as ex:
             return "Unable to get the metrics list because of database\
                    exception"

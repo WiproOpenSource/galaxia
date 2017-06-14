@@ -22,7 +22,7 @@ from sqlalchemy.engine.url import URL
 engine = None
 
 
-def init_db(db_type, username, password, host, db):
+def init_db(db_type, username, password, host, db, db_location):
     """
     Creates database engine
     :param db_type: database type
@@ -33,5 +33,9 @@ def init_db(db_type, username, password, host, db):
     :return:
     """
     global engine
-    url = URL(db_type, username, password, host, database=db)
+    url = None
+    if db_type == 'mysql':
+        url = URL(db_type, username, password, host, database=db)
+    elif db_type == 'sqlite':
+        url = "sqlite:///" + db_location
     engine = create_engine(url)

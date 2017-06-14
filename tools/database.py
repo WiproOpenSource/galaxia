@@ -25,16 +25,22 @@ from optparse import OptionParser
 
 def main():
     parser = OptionParser()
+    db_url = None
+    galaxia_db_url = None
     parser.add_option("--host", help="Database provider host address", default="localhost")
     parser.add_option("--type", help="Database type valid values are mysql", default="mysql")
     parser.add_option("--username", help="Username to login to database")
     parser.add_option("--password", help="Password to login to database")
     parser.add_option("--csvfile", help="csvfile to import into database")
+    parser.add_option("--dbloc", help="DB location")
 
     (options, args) = parser.parse_args()
-
-    db_url = options.type+"://"+options.username+":"+options.password+"@"+options.host
-    galaxia_db_url = db_url + "/galaxia"
+    if options.type == 'mysql':
+        db_url = options.type+"://"+options.username+":"+options.password+"@"+options.host
+        galaxia_db_url = db_url + "/galaxia"
+    elif options.type == 'sqlite':
+        db_url = "sqlite:///" + options.dbloc
+        galaxia_db_url = db_url
 
     print "Connecting to "+options.type + " database@"+ options.host
     engine = create_engine(db_url)

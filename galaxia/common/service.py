@@ -39,9 +39,14 @@ DB_SERVICE_OPTS = [
                default='mysql',
                help='Database type'),
     cfg.StrOpt('username',
+               default='test',
                help='Username to connect to database'),
     cfg.StrOpt('password',
-               help='Password to connect to database')
+               default='test',
+               help='Password to connect to database'),
+    cfg.StrOpt('db_location',
+               default='/tmp/galaxia.db',
+               help='File system location only for sqlite')
 ]
 
 
@@ -70,7 +75,8 @@ def prepare_service(service_name, argv=[]):
     cfg.CONF.register_opts(DB_SERVICE_OPTS, db_group)
     cfg.CONF.set_override('db_host', cfg.CONF.db.db_host, db_group)
     cfg.CONF.set_override('type', cfg.CONF.db.type, db_group)
+    cfg.CONF.set_override('db_location', cfg.CONF.db.db_location, db_group)
 
     sql_helper.init_db(cfg.CONF.db.type, cfg.CONF.db.username,
-                       cfg.CONF.db.password, cfg.CONF.db.db_host, "galaxia")
+                       cfg.CONF.db.password, cfg.CONF.db.db_host, "galaxia", cfg.CONF.db.db_location)
     load_mapping.initialize()
