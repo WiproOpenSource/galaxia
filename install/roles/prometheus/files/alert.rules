@@ -1,0 +1,26 @@
+ALERT HighMemoryAlert
+  IF container_memory_usage_bytes > 1000
+  FOR 1m
+  WITH {}
+  SUMMARY "High Memory usage for Ubuntu container"
+  DESCRIPTION "High Memory usage for Ubuntu container on {{$labels.instance}} for container {{$labels.name}} (current value: {{$value}})"
+
+ALERT NodeLowDisk
+  IF node_filesystem_avail_percent{filesystem="/"} < 20
+  FOR 2m
+  WITH {
+    severity="page"
+  }
+  SUMMARY "{{$labels.instance}}: Low disk space"
+  DESCRIPTION "{{$labels.instance}}: Free disk space for / dropped below 20%"
+
+
+ALERT NodeDown
+  IF up{env =~ "^prod$|^dmz$"} == 0
+  FOR 2m
+  WITH {
+    severity="page"
+  }
+  SUMMARY "Node {{$labels.instance}} down"
+  DESCRIPTION "{{$labels.instance}} has been down for more than 5 minutes."
+
