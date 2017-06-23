@@ -5,6 +5,6 @@ start on startup
 chdir {{ prometheus_dist_dir }}/prometheus-{{prometheus_version}}.linux-amd64
 
 script
-   ./prometheus -config.file /etc/prometheus/prometheus.yml
+   ./prometheus -config.file=/etc/prometheus/prometheus.yml -alertmanager.url={{ alertmanager_host_port }}
 end script
 

@@ -11,4 +11,5 @@
     - { role: exporter,      tags: exporter }
     - { role: galaxia,       tags: galaxia }
     - { role: sshkeygen}
+    - { role: alertmanager}
     

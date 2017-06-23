@@ -1,0 +1,10 @@
+# Run prometheus
+
+start on startup
+
+chdir {{ alertmanager_dist_dir }}/alertmanager-{{alertmanager_version}}.linux-amd64
+
+script
+   ./alertmanager -config.file /etc/alertmanager/alertmanager.yml
+end script
+

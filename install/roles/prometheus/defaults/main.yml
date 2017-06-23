@@ -5,3 +5,4 @@ prometheus_root_dir: /opt/prometheus
 prometheus_config_dir: /etc/prometheus
 prometheus_dist_dir: "{{ prometheus_root_dir }}/dist"
 prometheus_user: ubuntu
+alertmanager_host_port: http://localhost:9093

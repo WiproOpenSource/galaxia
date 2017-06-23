@@ -21,6 +21,7 @@ from galaxia.gapi.controller.v1 import catalogue
 from galaxia.gapi.controller.v1 import status
 from galaxia.gapi.controller.v1 import label
 from galaxia.gapi.controller.v1 import register
+from galaxia.gapi.controller.v1 import alert
 
 
 class Controller(object):
@@ -31,4 +32,5 @@ class Controller(object):
     status = status.StatusController()
     register = register.RegisterController()
     label = label.LabelController()
+    alert = alert.AlertController()
 

@@ -1,0 +1,44 @@
+---
+- name: create alertmanager directory structure
+  file: >
+    state=directory
+    path={{ item }}
+    owner=root
+    group=root
+  with_items:
+    - "{{ alertmanager_root_dir }}"
+    - "{{ alertmanager_dist_dir }}"
+    - "{{ alertmanager_config_dir }}"
+    - "{{ alertmanager_template_dir }}"
+
+- stat: path={{ alertmanager_dist_dir}}/alertmanager-{{alertmanager_version}}.linux-amd64.tar.gz
+  register: alertmanager_tar_gz
+
+- name: Download alertmanager tar.gz
+  raw: >
+    cd {{ alertmanager_dist_dir }};
+    wget https://github.com/prometheus/alertmanager/releases/download/v{{alertmanager_version}}/alertmanager-{{alertmanager_version}}.linux-amd64.tar.gz;
+  when: alertmanager_tar_gz.stat.exists == False
+
+- name: Install alertmanager
+  raw: >
+    cd {{ alertmanager_dist_dir }};
+    tar xfz alertmanager-{{alertmanager_version}}.linux-amd64.tar.gz;
+    
+- name: create alertmanager config file
+  copy: src=alertmanager.yml dest={{ alertmanager_config_dir }}/alertmanager.yml mode=0755
+
+- name: create alertmanager template file
+  copy: src=default.tmpl dest={{ alertmanager_template_dir }}/default.tmpl mode=0755
+
+- name: create alertmanager upstart init files
+  template: >
+    src={{ item }}.j2
+    dest=/etc/init/{{ item }}
+  with_items:
+    - alertmanager.conf
+
+- name: start alertmanager service
+  service: name=alertmanager state=started enabled=yes
+#  notify:
+ #    - restart prometheus

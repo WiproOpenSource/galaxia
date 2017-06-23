@@ -6,6 +6,7 @@ script
    export galaxia_api_endpoint=http://{{ ansible_hostname }}:7000/v1
    export aggregator_endpoint=http://{{ ansible_hostname }}:9090/api/v1
    export renderer_endpoint=http://{{ ansible_hostname }}:3000/
+   export alertmanager_endpoint=http://{{ ansible_hostname }}:9093/api/v1
    gapi --config-file /etc/galaxia/galaxia.conf
 end script
 

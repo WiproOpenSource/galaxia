@@ -1,0 +1,8 @@
+---
+alertmanager_version: 0.5.1
+node_exporter_version: 0.12.0rc1
+alertmanager_root_dir: /opt/alertmanager
+alertmanager_config_dir: /etc/alertmanager
+alertmanager_template_dir: /etc/alertmanager/template
+alertmanager_dist_dir: "{{ alertmanager_root_dir }}/dist"
+alertmanager_user: ubuntu
