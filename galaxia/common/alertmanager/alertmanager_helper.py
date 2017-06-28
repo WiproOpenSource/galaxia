@@ -41,4 +41,4 @@ def post_alert(description, generator, labels):
     payload = create_payload(description, generator, labels)
     resp = client.http_request("POST", alertmanager_request_url, headers_post, payload,
                                    None, None)
-    return resp
+    return resp.text
