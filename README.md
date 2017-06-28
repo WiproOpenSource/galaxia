@@ -196,11 +196,20 @@ Clone the galaxia source code
 git clone https://github.com/WiproOpenSourcePractice/galaxia
 ```
 
+Now galaxia by default supports sqlite as the backend.
 Go to install directory & run the command
 
 ```
 ansible-playbook site.yml
 ```
+
+If instead of sqlite you want to use mysql as the backend than follow the below steps:
+1. Uncomment the mysql role in site.yml
+2. In galaxia/templates modify the galaxia.conf.j2 and under [db] change the type from 'sqlite' to 'mysql'
+3. In galaxia/tasks/install.yml. Under the task name "Install galaxia" modify "--type sqlite" to "--type mysql"
+
+Once done you can run the playbook as suggested above.
+
 
 This will setup an ALL-IN-ONE Galaxia with-in few minutes depending on your network speed.
 Once done skip to section [Testing Galaxia Services](https://github.com/WiproOpenSourcePractice/galaxia#testing-galaxia-services)

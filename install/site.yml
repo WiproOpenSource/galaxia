@@ -3,12 +3,12 @@
   gather_facts: yes
   sudo: true
   roles:
-    - { role: mysql,         tags: mysql }
+    #- { role: mysql,         tags: mysql }
     - { role: rabbitmq,      tags: rabbitmq }
     - { role: prometheus,    tags: prometheus }
-    - { role: promdash,      tags: promdash }
-    - { role: docker,        tags: docker }
-    - { role: exporter,      tags: exporter }
+    #- { role: promdash,      tags: promdash }
+    #- { role: docker,        tags: docker }
+    #- { role: exporter,      tags: exporter }
     - { role: galaxia,       tags: galaxia }
     - { role: sshkeygen}
     - { role: alertmanager}
