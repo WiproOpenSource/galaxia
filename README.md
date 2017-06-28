@@ -74,6 +74,7 @@ from various systems. Some of the pain points today organization face:
 - Export docker container metrics as a scheduled job to your favorite system for alerts, notifications & alarms,
    currently this functionality is available for OpenStack Ceilometer
 - Ability to list down all the containers, hosts being monitored and their relationship.
+- Capability to subscribe for alerts and notifications
 
 ### Future Roadmap
 --------------
@@ -81,7 +82,6 @@ from various systems. Some of the pain points today organization face:
 - Capability to group related dashboards
 - Capability to pause, stop and resume outbound exporter jobs
 - Capability to generate custom reports
-- Capability to subscribe for alerts and notifications
 - Capability to bring in intelligence among metrics from various systems and generate an integrated dashboard
 - Integrate with another third party metrics renderer like grafana
 - Provide capacity planning capabilities via advanced analytics
@@ -541,6 +541,26 @@ http://localhost:7000/v1/metrics?type=container
 http://localhost:7000/v1/exporter
 {"source_system": "prometheus", "target_system": "ceilometer", "metrics_list": ["cpu"], "time_interval": "1", "unit_type": "docker",  "exporter_name": "ashish2"}
 
+```
+
+8) Alert and Notification API
+Galaxia now supports alert and notifications. There are two capabilities supported
+1. Retrieve all the active alerts
+2. Post alerts from custom systems to alertmanager.
+
+To retrieve all the active alerts run a GET call as
+
+```
+http://localhost:7000/v1/alert
+```
+
+To post a custom alert. Send a POST request with the following payload
+```
+http://localhost:7000/v1/alert
+{"labels": {"service": "Galaxia","name": "galaxia-node"},
+ "description": "Service galaxia for node has been successfully spawned",
+ "generator": "openapp"
+}
 ```
 
 ### Contributing to Galaxia
